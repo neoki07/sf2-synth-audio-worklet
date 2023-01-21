@@ -1,0 +1,51 @@
+{
+  "name": "sf2-synth-audio-worklet",
+  "private": true,
+  "version": "0.0.1",
+  "main": "./dist/sf2-synth-audio-worklet.cjs",
+  "module": "./dist/sf2-synth-audio-worklet.mjs",
+  "types": "./dist/sf2-synth-audio-worklet.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/sf2-synth-audio-worklet.cjs",
+      "import": "./dist/sf2-synth-audio-worklet.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "vite --host",
+    "build": "tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
+    "build:processor": "rollup -c rollup-processor.config.mjs",
+    "watch:processor": "rollup -c rollup-processor.config.mjs -w",
+    "test": "jest --runInBand",
+    "test:coverage": "jest --runInBand --coverage",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier . --write",
+    "prepare": "husky install && husky set .husky/pre-commit 'lint-staged' && git add .husky/pre-commit",
+    "uninstall-husky": "pnpm remove husky --no-save && git config --unset core.hooksPath && rimraf .husky"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/jest": "^29.2.6",
+    "@types/jsdom": "^20.0.1",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "dts-bundle-generator": "^7.1.0",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "jest": "^29.3.1",
+    "prettier": "^2.8.3",
+    "rimraf": "^4.1.1",
+    "rollup": "^3.10.1",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.4"
+  }
+}
