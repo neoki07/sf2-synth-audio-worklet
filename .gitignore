@@ -25,4 +25,11 @@ coverage
 *.sln
 *.sw?
 
+target
+**/*.rs.bk
+Cargo.lock
+bin/
+pkg/
+wasm-pack.log
+
 pnpm-lock.yaml

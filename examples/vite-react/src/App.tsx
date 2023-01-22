@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { createNode } from 'sf2-synth-audio-worklet'
+import { createSoundFont2SynthNode } from 'sf2-synth-audio-worklet'
 
 function App() {
   const [node, setNode] = useState<AudioWorkletNode | undefined>(undefined)
@@ -23,13 +23,32 @@ function App() {
           disabled={node !== undefined}
           onClick={async () => {
             const audioContext = new AudioContext()
-            const node = await createNode(audioContext)
+            const node = await createSoundFont2SynthNode(audioContext)
             node.connect(audioContext.destination)
             setNode(node)
           }}
         >
           start
         </button>
+        <button
+        style={{marginLeft: '1rem'}}
+          disabled={node === undefined}
+          onClick={() => {
+            if (node !== undefined) {
+              node.port.postMessage({
+                type: 'send-note-on-event',
+                channel: 0,
+                key: 60,
+                vel: 100,
+                delayTime: 0,
+                sampleRate: 44100,
+              })
+            }}
+          }
+        >
+          note on
+        </button>
+
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>

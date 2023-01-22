@@ -2,10 +2,10 @@ import typescript from '@rollup/plugin-typescript'
 
 export default [
   {
-    input: 'src/white-noise-processor.ts',
+    input: 'src/processor.ts',
     output: {
       name: 'whiteNoiseProcessor',
-      file: 'src/generated/white-noise-processor.js',
+      file: 'src/generated/processor.js',
       format: 'iife',
       sourcemap: true,
     },

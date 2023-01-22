@@ -1,1 +1,1 @@
-export const PROCESSOR_NAME = 'white-noise-processor'
+export const PROCESSOR_NAME = 'sf2-synth-processor'

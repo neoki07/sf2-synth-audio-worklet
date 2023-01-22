@@ -17,7 +17,8 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "vite --host",
-    "build": "tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
+    "build": "pnpm build:wasm && pnpm build:processor && tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.ts",
+    "build:wasm": "wasm-pack build wasm-src --release --target web --out-dir ../src/generated/wasm",
     "build:processor": "rollup -c rollup-processor.config.mjs",
     "watch:processor": "rollup -c rollup-processor.config.mjs -w",
     "test": "jest --runInBand",
