@@ -5,20 +5,21 @@ import { SoundFont2SynthNode } from './node'
 import processorRaw from './generated/processor.js?raw'
 // eslint-disable-next-line
 // @ts-ignore
-import wasmUrl from './generated/wasm/sf2_synth_audio_worklet_wasm_bg.wasm?url'
+import wasmURL from './generated/wasm/sf2_synth_audio_worklet_wasm_bg.wasm?url'
 
 const processorBlob = new Blob([processorRaw], {
   type: 'application/javascript; charset=utf-8',
 })
 
 async function createSoundFont2SynthNode(
-  context: AudioContext
+  context: AudioContext,
+  sf2URL: string | URL
 ): Promise<SoundFont2SynthNode> {
   let node
 
   try {
     // Fetch the WebAssembly module that performs pitch detection.
-    const response = await window.fetch(wasmUrl)
+    const response = await window.fetch(wasmURL)
     const wasmBytes = await response.arrayBuffer()
 
     // Add our audio processor worklet to the context.
@@ -41,8 +42,7 @@ async function createSoundFont2SynthNode(
     // communicate with the audio processor (which runs in a Worklet).
     node = new SoundFont2SynthNode(context, PROCESSOR_NAME)
 
-    const sf2Url = new URL('./assets/A320U.sf2', import.meta.url)
-    const sf2Response = await fetch(sf2Url)
+    const sf2Response = await fetch(sf2URL)
     const sf2Bytes = await sf2Response.arrayBuffer()
 
     // Send the Wasm module to the audio node which in turn passes it to the
