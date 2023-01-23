@@ -514,7 +514,7 @@
     return finalizeInit(instance, module)
   }
 
-  class SoundFontSynthProcessor extends AudioWorkletProcessor {
+  class SoundFont2SynthProcessor extends AudioWorkletProcessor {
     synth
     sf2Bytes
     constructor() {
@@ -567,6 +567,6 @@
       return true
     }
   }
-  registerProcessor(PROCESSOR_NAME, SoundFontSynthProcessor)
+  registerProcessor(PROCESSOR_NAME, SoundFont2SynthProcessor)
 })()
 //# sourceMappingURL=processor.js.map

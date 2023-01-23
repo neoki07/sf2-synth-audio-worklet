@@ -5,7 +5,7 @@ import init, {
   WasmSoundFontSynth,
 } from './generated/wasm/sf2_synth_audio_worklet_wasm'
 
-class SoundFontSynthProcessor extends AudioWorkletProcessor {
+class SoundFont2SynthProcessor extends AudioWorkletProcessor {
   synth?: WasmSoundFontSynth
   sf2Bytes?: ArrayBuffer
 
@@ -69,4 +69,4 @@ class SoundFontSynthProcessor extends AudioWorkletProcessor {
   }
 }
 
-registerProcessor(PROCESSOR_NAME, SoundFontSynthProcessor)
+registerProcessor(PROCESSOR_NAME, SoundFont2SynthProcessor)
