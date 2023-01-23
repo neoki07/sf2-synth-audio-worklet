@@ -1,16 +1,8 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
+import SoundFontKeyboard from './Keyboard'
 import './App.css'
-import {
-  SoundFont2SynthNode,
-  createSoundFont2SynthNode,
-} from 'sf2-synth-audio-worklet'
-
-const sf2URL = new URL('./assets/A320U.sf2', import.meta.url)
 
 function App() {
-  const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
-
   return (
     <div className="App">
       <div>
@@ -24,37 +16,8 @@ function App() {
       <h1>Vite + React + Audio Worklet</h1>
       <h1>Demo</h1>
       <div className="card">
-        <button
-          style={{ marginLeft: '1rem' }}
-          disabled={node !== undefined}
-          onClick={async () => {
-            const audioContext = new AudioContext()
-            const node = await createSoundFont2SynthNode(audioContext, sf2URL)
-            node.connect(audioContext.destination)
-            setNode(node)
-          }}
-        >
-          start
-        </button>
-        <button
-          style={{ marginLeft: '1rem' }}
-          disabled={node === undefined}
-          onClick={() => {
-            if (node !== undefined) {
-              node.noteOn(0, 60, 100, 0)
-            }
-          }}
-        >
-          note on
-        </button>
-
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <SoundFontKeyboard />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   )
 }
