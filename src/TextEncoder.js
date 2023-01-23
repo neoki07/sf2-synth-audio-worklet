@@ -96,7 +96,7 @@
   typeof globalThis == '' + void 0
     ? typeof global == '' + void 0
       ? typeof self == '' + void 0
-        ? this
+        ? undefined
         : self
       : global
     : globalThis
