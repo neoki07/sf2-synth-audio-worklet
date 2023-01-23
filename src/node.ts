@@ -1,4 +1,25 @@
-export class SoundFont2SynthNode extends AudioWorkletNode {
+import { SoundFont2SynthMessageType } from './constants'
+
+interface ISoundFont2SynthNode {
+  noteOn(channel: number, key: number, vel: number, delayTime: number): void
+  noteOff(channel: number, key: number, delayTime: number): void
+}
+
+export class SoundFont2SynthNode
+  extends AudioWorkletNode
+  implements ISoundFont2SynthNode
+{
+  sampleRate: number
+
+  constructor(
+    context: BaseAudioContext,
+    name: string,
+    options?: AudioWorkletNodeOptions
+  ) {
+    super(context, name, options)
+    this.sampleRate = 44100
+  }
+
   /**
    * @param {ArrayBuffer} wasmBytes
    * @param {ArrayBuffer} sf2Bytes
@@ -7,7 +28,7 @@ export class SoundFont2SynthNode extends AudioWorkletNode {
     this.port.onmessage = (event) => this.onmessage(event)
 
     this.port.postMessage({
-      type: 'send-wasm-module',
+      type: SoundFont2SynthMessageType.SendWasmModule,
       wasmBytes,
       sf2Bytes,
     })
@@ -20,11 +41,30 @@ export class SoundFont2SynthNode extends AudioWorkletNode {
   }
 
   onmessage(event: MessageEvent) {
-    if (event.data.type === 'wasm-module-loaded') {
+    if (event.data.type === SoundFont2SynthMessageType.WasmModuleLoaded) {
       this.port.postMessage({
-        type: 'init-synth',
+        type: SoundFont2SynthMessageType.InitSynth,
         sampleRate: this.context.sampleRate,
       })
     }
+  }
+
+  noteOn(channel: number, key: number, vel: number, delayTime: number) {
+    this.port.postMessage({
+      type: SoundFont2SynthMessageType.NoteOn,
+      channel,
+      key,
+      vel,
+      delayTime: delayTime * this.sampleRate,
+    })
+  }
+
+  noteOff(channel: number, key: number, delayTime: number) {
+    this.port.postMessage({
+      type: SoundFont2SynthMessageType.NoteOff,
+      channel,
+      key,
+      delayTime: delayTime * this.sampleRate,
+    })
   }
 }

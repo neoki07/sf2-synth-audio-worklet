@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
-import { createSoundFont2SynthNode } from 'sf2-synth-audio-worklet'
+import {
+  SoundFont2SynthNode,
+  createSoundFont2SynthNode,
+} from 'sf2-synth-audio-worklet'
 
 const sf2URL = new URL('./assets/A320U.sf2', import.meta.url)
 
 function App() {
-  const [node, setNode] = useState<AudioWorkletNode | undefined>(undefined)
-  
+  const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
+
   return (
     <div className="App">
       <div>
@@ -22,7 +25,7 @@ function App() {
       <h1>Demo</h1>
       <div className="card">
         <button
-          style={{marginLeft: '1rem'}}
+          style={{ marginLeft: '1rem' }}
           disabled={node !== undefined}
           onClick={async () => {
             const audioContext = new AudioContext()
@@ -34,20 +37,13 @@ function App() {
           start
         </button>
         <button
-          style={{marginLeft: '1rem'}}
+          style={{ marginLeft: '1rem' }}
           disabled={node === undefined}
           onClick={() => {
             if (node !== undefined) {
-              node.port.postMessage({
-                type: 'send-note-on-event',
-                channel: 0,
-                key: 60,
-                vel: 100,
-                delayTime: 0,
-                sampleRate: 44100,
-              })
-            }}
-          }
+              node.noteOn(0, 60, 100, 0)
+            }
+          }}
         >
           note on
         </button>

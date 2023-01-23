@@ -1,11 +1,19 @@
 import './TextEncoder.js'
-import { PROCESSOR_NAME } from './constants.js'
+import { PROCESSOR_NAME, SoundFont2SynthMessageType } from './constants.js'
 
 import init, {
   WasmSoundFontSynth,
 } from './generated/wasm/sf2_synth_audio_worklet_wasm'
 
-class SoundFont2SynthProcessor extends AudioWorkletProcessor {
+interface ISoundFont2SynthProcessor {
+  noteOn(channel: number, key: number, vel: number, delayTime: number): void
+  noteOff(channel: number, key: number, delayTime: number): void
+}
+
+class SoundFont2SynthProcessor
+  extends AudioWorkletProcessor
+  implements ISoundFont2SynthProcessor
+{
   synth?: WasmSoundFontSynth
   sf2Bytes?: ArrayBuffer
 
@@ -20,12 +28,14 @@ class SoundFont2SynthProcessor extends AudioWorkletProcessor {
 
   onmessage(event: MessageEvent) {
     const data = event.data
-    if (data.type === 'send-wasm-module') {
+    if (data.type === SoundFont2SynthMessageType.SendWasmModule) {
       init(WebAssembly.compile(data.wasmBytes)).then(() => {
-        this.port.postMessage({ type: 'wasm-module-loaded' })
+        this.port.postMessage({
+          type: SoundFont2SynthMessageType.WasmModuleLoaded,
+        })
       })
       this.sf2Bytes = data.sf2Bytes
-    } else if (data.type === 'init-synth') {
+    } else if (data.type === SoundFont2SynthMessageType.InitSynth) {
       if (!this.sf2Bytes) {
         throw new Error('sf2Bytes is undefined')
       }
@@ -34,24 +44,21 @@ class SoundFont2SynthProcessor extends AudioWorkletProcessor {
         new Uint8Array(this.sf2Bytes),
         data.sampleRate
       )
-
-      this.port.postMessage({ type: 'synth-initialized' })
-    } else if (data.type === 'send-note-on-event') {
-      if (!this.synth) return
-      this.synth.note_on(
-        data.channel,
-        data.key,
-        data.vel,
-        data.delayTime * data.sampleRate
-      )
-    } else if (data.type === 'send-note-off-event') {
-      if (!this.synth) return
-      this.synth.note_off(
-        data.channel,
-        data.key,
-        data.delayTime * data.sampleRate
-      )
+    } else if (data.type === SoundFont2SynthMessageType.NoteOn) {
+      this.noteOn(data.channel, data.key, data.vel, data.delayTime)
+    } else if (data.type === SoundFont2SynthMessageType.NoteOff) {
+      this.noteOff(data.channel, data.key, data.delayTime)
     }
+  }
+
+  noteOn(channel: number, key: number, vel: number, delayTime: number) {
+    if (!this.synth) return
+    this.synth.note_on(channel, key, vel, delayTime)
+  }
+
+  noteOff(channel: number, key: number, delayTime: number) {
+    if (!this.synth) return
+    this.synth.note_off(channel, key, delayTime)
   }
 
   process(_inputs: Float32Array[][], outputs: Float32Array[][]): boolean {
