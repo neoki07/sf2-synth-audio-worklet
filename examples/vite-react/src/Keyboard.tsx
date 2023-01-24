@@ -12,13 +12,39 @@ import {
   ArrowSmallRightIcon,
   ArrowSmallUpIcon,
 } from '@heroicons/react/24/solid'
+import Select from 'react-select'
 
 import 'react-piano/dist/styles.css'
 import './Keyboard.css'
 
 const sf2URL = new URL('./assets/A320U.sf2', import.meta.url)
 
+export interface ColourOption {
+  readonly value: string
+  readonly label: string
+  readonly color: string
+  readonly isFixed?: boolean
+  readonly isDisabled?: boolean
+}
+
+export const colourOptions: readonly ColourOption[] = [
+  { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
+  { value: 'blue', label: 'Blue', color: '#0052CC', isDisabled: true },
+  { value: 'purple', label: 'Purple', color: '#5243AA' },
+  { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
+  { value: 'orange', label: 'Orange', color: '#FF8B00' },
+  { value: 'yellow', label: 'Yellow', color: '#FFC400' },
+  { value: 'green', label: 'Green', color: '#36B37E' },
+  { value: 'forest', label: 'Forest', color: '#00875A' },
+  { value: 'slate', label: 'Slate', color: '#253858' },
+  { value: 'silver', label: 'Silver', color: '#666666' },
+]
+
 function SoundFontKeyboard() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const onMenuOpen = () => setIsMenuOpen(true)
+  const onMenuClose = () => setIsMenuOpen(false)
+
   const [node, setNode] = useState<ISoundFont2SynthNode | undefined>(undefined)
   const [octave, setOctave] = useState(2)
   const [velocity, setVelocity] = useState(100)
@@ -132,6 +158,23 @@ function SoundFontKeyboard() {
             </button>
           </div>
         </div>
+        <form>
+          <label id="aria-label" htmlFor="aria-example-input">
+            First note
+          </label>
+
+          <Select
+            // aria-labelledby="aria-label"
+            // ariaLiveMessages={{
+            //   onFocus,
+            // }}
+            // inputId="aria-example-input"
+            // name="aria-live-color"
+            onMenuOpen={onMenuOpen}
+            onMenuClose={onMenuClose}
+            options={colourOptions}
+          />
+        </form>
       </div>
     </div>
   )
