@@ -20,7 +20,7 @@ const fileName = {
 };
 
 module.exports = defineConfig({
-  base: "/sf2-synth-audio-worklet/",
+  base: "./",
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
