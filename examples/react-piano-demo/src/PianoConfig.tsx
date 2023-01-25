@@ -1,81 +1,81 @@
-import React, {ChangeEvent, ChangeEventHandler, Dispatch, FC, ReactNode, SetStateAction, useRef} from "react";
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  Dispatch,
+  FC,
+  ReactNode,
+  SetStateAction,
+  useRef,
+} from 'react'
 // @ts-ignore
-import {MidiNumbers} from 'react-piano';
-import {NoteRange} from "./App";
-
+import { MidiNumbers } from 'react-piano'
+import { NoteRange } from './App'
+import { PresetHeader } from '../../../dist/sf2-synth-audio-worklet'
 
 type AutoblurSelectProps = {
-  className: string;
-  onChange: ChangeEventHandler<HTMLSelectElement>;
-  value: string | number;
-  children: ReactNode;
+  className: string
+  onChange: ChangeEventHandler<HTMLSelectElement>
+  value: string | number
+  children: ReactNode
 }
 
-const AutoblurSelect: FC<AutoblurSelectProps> = ({className, onChange, value, children}) => {
-  const selectRef = useRef<HTMLSelectElement>(null);
+const AutoblurSelect: FC<AutoblurSelectProps> = ({
+  className,
+  onChange,
+  value,
+  children,
+}) => {
+  const selectRef = useRef<HTMLSelectElement>(null)
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onChange(event);
-    selectRef.current!.blur();
+    onChange(event)
+    selectRef.current!.blur()
   }
 
   return (
-    <select className={className} value={value} onChange={handleChange} ref={selectRef}>
+    <select
+      className={className}
+      value={value}
+      onChange={handleChange}
+      ref={selectRef}
+    >
       {children}
     </select>
   )
-
 }
 
 type LabelProps = {
   children: ReactNode
 }
 
-const Label: FC<LabelProps> = ({children}) => {
-  return <small className="mb-1 text-muted">{children}</small>;
+const Label: FC<LabelProps> = ({ children }) => {
+  return <small className="mb-1 text-muted">{children}</small>
 }
 
 type PianoConfigProps = {
-  noteRange: NoteRange;
-  setNoteRange: Dispatch<SetStateAction<NoteRange>>;
-  instrumentName: string;
-  setInstrumentName: Dispatch<SetStateAction<string>>;
-  instrumentList: string[];
+  noteRange: NoteRange
+  instrumentName: string
+  presetHeaders: PresetHeader[]
+  onChangeFirstNote: (event: ChangeEvent<HTMLSelectElement>) => void
+  onChangeLastNote: (event: ChangeEvent<HTMLSelectElement>) => void
+  onChangeInstrument: (event: ChangeEvent<HTMLSelectElement>) => void
 }
 
 export const PianoConfig: FC<PianoConfigProps> = ({
-                                                    noteRange,
-                                                    setNoteRange,
-                                                    instrumentName,
-                                                    setInstrumentName,
-                                                    instrumentList
-                                                  }) => {
-  const midiNumbersToNotes = MidiNumbers.NATURAL_MIDI_NUMBERS.reduce((obj: any, midiNumber: any) => {
-    obj[midiNumber] = MidiNumbers.getAttributes(midiNumber).note;
-    return obj;
-  }, {});
-
-  const onChangeFirstNote = (event: ChangeEvent<HTMLSelectElement>) => {
-    setNoteRange((prev) =>
-      ({
-        first: parseInt(event.target.value, 10),
-        last: prev.last,
-      })
-    )
-  };
-
-  const onChangeLastNote = (event: ChangeEvent<HTMLSelectElement>) => {
-    setNoteRange((prev) =>
-      ({
-        first: prev.first,
-        last: parseInt(event.target.value, 10),
-      })
-    )
-  };
-
-  const onChangeInstrument = (event: ChangeEvent<HTMLSelectElement>) => {
-    setInstrumentName(event.target.value);
-  };
+  noteRange,
+  instrumentName,
+  presetHeaders,
+  onChangeFirstNote,
+  onChangeLastNote,
+  onChangeInstrument,
+}) => {
+  const midiNumbersToNotes = MidiNumbers.NATURAL_MIDI_NUMBERS.reduce(
+    (obj: any, midiNumber: any) => {
+      obj[midiNumber] = MidiNumbers.getAttributes(midiNumber).note
+      return obj
+    },
+    {}
+  )
 
   return (
     <div className="form-row">
@@ -83,11 +83,15 @@ export const PianoConfig: FC<PianoConfigProps> = ({
         <Label>First note</Label>
         <AutoblurSelect
           className="form-control"
-          onChange={onChangeFirstNote}
           value={noteRange.first}
+          onChange={onChangeFirstNote}
         >
           {MidiNumbers.NATURAL_MIDI_NUMBERS.map((midiNumber: number) => (
-            <option value={midiNumber} disabled={midiNumber >= noteRange.last} key={midiNumber}>
+            <option
+              value={midiNumber}
+              disabled={midiNumber >= noteRange.last}
+              key={midiNumber}
+            >
               {midiNumbersToNotes[midiNumber]}
             </option>
           ))}
@@ -97,11 +101,15 @@ export const PianoConfig: FC<PianoConfigProps> = ({
         <Label>Last note</Label>
         <AutoblurSelect
           className="form-control"
-          onChange={onChangeLastNote}
           value={noteRange.last}
+          onChange={onChangeLastNote}
         >
           {MidiNumbers.NATURAL_MIDI_NUMBERS.map((midiNumber: number) => (
-            <option value={midiNumber} disabled={midiNumber <= noteRange.first} key={midiNumber}>
+            <option
+              value={midiNumber}
+              disabled={midiNumber <= noteRange.first}
+              key={midiNumber}
+            >
               {midiNumbersToNotes[midiNumber]}
             </option>
           ))}
@@ -114,9 +122,9 @@ export const PianoConfig: FC<PianoConfigProps> = ({
           value={instrumentName}
           onChange={onChangeInstrument}
         >
-          {instrumentList.map((value) => (
-            <option value={value} key={value}>
-              {value}
+          {presetHeaders.map((header, index) => (
+            <option key={header.name} value={index}>
+              {`${index}: ${header.name}`}
             </option>
           ))}
         </AutoblurSelect>

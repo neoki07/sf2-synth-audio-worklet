@@ -1,14 +1,20 @@
-import { SoundFont2SynthMessageType } from './constants'
+import {SoundFont2SynthMessageType} from './constants'
+import {PresetHeader} from "@/types";
 
 interface ISoundFont2SynthNode {
   noteOn(channel: number, key: number, vel: number, delayTime: number): void
+
   noteOff(channel: number, key: number, delayTime: number): void
+
+  getPresetHeaders(): Promise<PresetHeader[]>
+  setProgram(channel: number, bank: number, preset: number): void
 }
+
+let _presetHeaders: PresetHeader[] | undefined = undefined;
 
 export class SoundFont2SynthNode
   extends AudioWorkletNode
-  implements ISoundFont2SynthNode
-{
+  implements ISoundFont2SynthNode {
   sampleRate: number
 
   constructor(
@@ -41,11 +47,14 @@ export class SoundFont2SynthNode
   }
 
   onmessage(event: MessageEvent) {
-    if (event.data.type === SoundFont2SynthMessageType.WasmModuleLoaded) {
+    const data = event.data;
+    if (data.type === SoundFont2SynthMessageType.WasmModuleLoaded) {
       this.port.postMessage({
         type: SoundFont2SynthMessageType.InitSynth,
         sampleRate: this.context.sampleRate,
       })
+    } else if (data.type === SoundFont2SynthMessageType.GotPresetHeaders) {
+      _presetHeaders = data.presetHeaders;
     }
   }
 
@@ -66,5 +75,33 @@ export class SoundFont2SynthNode
       key,
       delayTime: delayTime * this.sampleRate,
     })
+  }
+
+  getPresetHeaders(): Promise<PresetHeader[]> {
+    _presetHeaders = undefined;
+    this.port.postMessage({
+      type: SoundFont2SynthMessageType.GetPresetHeaders
+    })
+
+    return new Promise(waitToGetPresetHeaders)
+  }
+
+  setProgram(channel: number, bank: number, preset: number) {
+    this.port.postMessage({
+      type: SoundFont2SynthMessageType.SetProgram,
+      channel,
+      bank,
+      preset
+    })
+  }
+}
+
+const waitToGetPresetHeaders = (resolve: (value: (PromiseLike<any[]> | any[])) => void) => {
+  if (_presetHeaders !== undefined) {
+    const presetHeaders = _presetHeaders
+    _presetHeaders = undefined
+    resolve(presetHeaders)
+  } else {
+    setTimeout(waitToGetPresetHeaders.bind(this, resolve), 500)
   }
 }

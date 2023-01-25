@@ -6,6 +6,9 @@ export const SoundFont2SynthMessageType = {
   InitSynth: 'init-synth',
   NoteOn: 'note-on',
   NoteOff: 'note-off',
+  GetPresetHeaders: 'get-preset-headers',
+  GotPresetHeaders: 'got-preset-headers',
+  SetProgram: 'set-program'
 } as const
 
 export type SoundFont2SynthMessageType =

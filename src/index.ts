@@ -1,5 +1,6 @@
-import { PROCESSOR_NAME } from './constants'
-import { SoundFont2SynthNode } from './node'
+import {PROCESSOR_NAME} from './constants'
+import {SoundFont2SynthNode} from './node'
+import {PresetHeader} from './types'
 // eslint-disable-next-line
 // @ts-ignore
 import processorRaw from './generated/processor.js?raw'
@@ -64,4 +65,5 @@ async function createSoundFont2SynthNode(
   return node
 }
 
-export { SoundFont2SynthNode, createSoundFont2SynthNode }
+export {SoundFont2SynthNode, createSoundFont2SynthNode}
+export type {PresetHeader}

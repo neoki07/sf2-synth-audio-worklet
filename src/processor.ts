@@ -1,19 +1,23 @@
 import './TextEncoder.js'
-import { PROCESSOR_NAME, SoundFont2SynthMessageType } from './constants.js'
+import {PROCESSOR_NAME, SoundFont2SynthMessageType} from './constants.js'
 
 import init, {
   WasmSoundFontSynth,
 } from './generated/wasm/sf2_synth_audio_worklet_wasm'
+import {PresetHeader} from "@/types";
 
 interface ISoundFont2SynthProcessor {
   noteOn(channel: number, key: number, vel: number, delayTime: number): void
+
   noteOff(channel: number, key: number, delayTime: number): void
+
+  getPresetHeaders(): void
+  setProgram(channel: number, bank: number, preset: number): void
 }
 
 class SoundFont2SynthProcessor
   extends AudioWorkletProcessor
-  implements ISoundFont2SynthProcessor
-{
+  implements ISoundFont2SynthProcessor {
   synth?: WasmSoundFontSynth
   sf2Bytes?: ArrayBuffer
 
@@ -48,6 +52,10 @@ class SoundFont2SynthProcessor
       this.noteOn(data.channel, data.key, data.vel, data.delayTime)
     } else if (data.type === SoundFont2SynthMessageType.NoteOff) {
       this.noteOff(data.channel, data.key, data.delayTime)
+    } else if (data.type === SoundFont2SynthMessageType.GetPresetHeaders) {
+      this.getPresetHeaders()
+    } else if (data.type === SoundFont2SynthMessageType.SetProgram) {
+      this.setProgram(data.channel, data.bank, data.preset)
     }
   }
 
@@ -59,6 +67,22 @@ class SoundFont2SynthProcessor
   noteOff(channel: number, key: number, delayTime: number) {
     if (!this.synth) return
     this.synth.note_off(channel, key, delayTime)
+  }
+
+  getPresetHeaders() {
+    if (!this.synth) return
+
+    const presetHeaders: PresetHeader[] = this.synth.get_preset_headers()
+
+    this.port.postMessage({
+      type: SoundFont2SynthMessageType.GotPresetHeaders,
+      presetHeaders
+    });
+  }
+
+  setProgram(channel: number, bank: number, preset: number) {
+    if (!this.synth) return
+    this.synth.program_select(channel, bank, preset)
   }
 
   process(_inputs: Float32Array[][], outputs: Float32Array[][]): boolean {
