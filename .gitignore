@@ -33,3 +33,4 @@ pkg/
 wasm-pack.log
 
 pnpm-lock.yaml
+!examples/*/pnpm-lock.yaml
