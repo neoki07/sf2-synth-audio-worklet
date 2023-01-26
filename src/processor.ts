@@ -1,10 +1,14 @@
 import './TextEncoder.js'
-import {PROCESSOR_NAME, SoundFont2SynthMessageType} from './constants.js'
+import { PROCESSOR_NAME } from './constants.js'
 
 import init, {
   WasmSoundFontSynth,
 } from './generated/wasm/sf2_synth_audio_worklet_wasm'
-import {PresetHeader} from "@/types";
+import {
+  PresetHeader,
+  SoundFont2SynthNodeMessageData,
+  SoundFont2SynthProcessorMessageData,
+} from '@/types'
 
 interface ISoundFont2SynthProcessor {
   noteOn(channel: number, key: number, vel: number, delayTime: number): void
@@ -17,7 +21,8 @@ interface ISoundFont2SynthProcessor {
 
 class SoundFont2SynthProcessor
   extends AudioWorkletProcessor
-  implements ISoundFont2SynthProcessor {
+  implements ISoundFont2SynthProcessor
+{
   synth?: WasmSoundFontSynth
   sf2Bytes?: ArrayBuffer
 
@@ -30,54 +35,62 @@ class SoundFont2SynthProcessor
     this.sf2Bytes = undefined
   }
 
-  onmessage(event: MessageEvent) {
+  onmessage(event: MessageEvent<SoundFont2SynthProcessorMessageData>) {
     const data = event.data
-    if (data.type === SoundFont2SynthMessageType.SendWasmModule) {
-      init(WebAssembly.compile(data.wasmBytes)).then(() => {
-        this.port.postMessage({
-          type: SoundFont2SynthMessageType.WasmModuleLoaded,
-        })
-      })
-      this.sf2Bytes = data.sf2Bytes
-    } else if (data.type === SoundFont2SynthMessageType.InitSynth) {
-      if (!this.sf2Bytes) {
-        throw new Error('sf2Bytes is undefined')
-      }
 
-      this.synth = WasmSoundFontSynth.new(
-        new Uint8Array(this.sf2Bytes),
-        data.sampleRate
-      )
-    } else if (data.type === SoundFont2SynthMessageType.NoteOn) {
-      this.noteOn(data.channel, data.key, data.vel, data.delayTime)
-    } else if (data.type === SoundFont2SynthMessageType.NoteOff) {
-      this.noteOff(data.channel, data.key, data.delayTime)
-    } else if (data.type === SoundFont2SynthMessageType.GetPresetHeaders) {
-      this.getPresetHeaders()
-    } else if (data.type === SoundFont2SynthMessageType.SetProgram) {
-      this.setProgram(data.channel, data.bank, data.preset)
+    switch (data.type) {
+      case 'send-wasm-module':
+        init(WebAssembly.compile(data.wasmBytes)).then(() => {
+          this.port.postMessage({
+            type: 'wasm-module-loaded',
+          } as SoundFont2SynthNodeMessageData)
+        })
+        this.sf2Bytes = data.sf2Bytes
+        break
+      case 'init-synth':
+        if (!this.sf2Bytes) {
+          throw new Error('sf2Bytes is undefined')
+        }
+
+        this.synth = WasmSoundFontSynth.new(
+          new Uint8Array(this.sf2Bytes),
+          data.sampleRate
+        )
+        break
+      case 'note-on':
+        this.noteOn(data.channel, data.key, data.vel, data.delayTime)
+        break
+      case 'note-off':
+        this.noteOff(data.channel, data.key, data.delayTime)
+        break
+      case 'get-preset-headers':
+        this.getPresetHeaders()
+        break
+      case 'set-program':
+        this.setProgram(data.channel, data.bank, data.preset)
+        break
+      default:
+        break
     }
   }
 
-  noteOn(channel: number, key: number, vel: number, delayTime: number) {
+  noteOn(channel: number, key: number, vel: number, delayTime?: number) {
     if (!this.synth) return
     this.synth.note_on(channel, key, vel, delayTime)
   }
 
-  noteOff(channel: number, key: number, delayTime: number) {
+  noteOff(channel: number, key: number, delayTime?: number) {
     if (!this.synth) return
     this.synth.note_off(channel, key, delayTime)
   }
 
   getPresetHeaders() {
     if (!this.synth) return
-
     const presetHeaders: PresetHeader[] = this.synth.get_preset_headers()
-
     this.port.postMessage({
-      type: SoundFont2SynthMessageType.GotPresetHeaders,
-      presetHeaders
-    });
+      type: 'got-preset-headers',
+      presetHeaders,
+    } as SoundFont2SynthNodeMessageData)
   }
 
   setProgram(channel: number, bank: number, preset: number) {
@@ -90,7 +103,6 @@ class SoundFont2SynthProcessor
 
     const outputChannels = outputs[0]
     const blockSize = outputChannels[0].length
-
     const next_block = this.synth.read_next_block(blockSize)
     outputChannels[0].set(next_block[0])
     outputChannels.length > 1 && outputChannels[1].set(next_block[1])

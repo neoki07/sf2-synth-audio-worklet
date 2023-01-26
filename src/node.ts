@@ -1,5 +1,8 @@
-import {SoundFont2SynthMessageType} from './constants'
-import {PresetHeader} from "@/types";
+import {
+  PresetHeader,
+  SoundFont2SynthNodeMessageData,
+  SoundFont2SynthProcessorMessageData,
+} from '@/types'
 
 interface ISoundFont2SynthNode {
   noteOn(channel: number, key: number, vel: number, delayTime: number): void
@@ -10,11 +13,12 @@ interface ISoundFont2SynthNode {
   setProgram(channel: number, bank: number, preset: number): void
 }
 
-let _presetHeaders: PresetHeader[] | undefined = undefined;
+let _presetHeaders: PresetHeader[] | undefined = undefined
 
 export class SoundFont2SynthNode
   extends AudioWorkletNode
-  implements ISoundFont2SynthNode {
+  implements ISoundFont2SynthNode
+{
   sampleRate: number
 
   constructor(
@@ -34,10 +38,10 @@ export class SoundFont2SynthNode
     this.port.onmessage = (event) => this.onmessage(event)
 
     this.port.postMessage({
-      type: SoundFont2SynthMessageType.SendWasmModule,
+      type: 'send-wasm-module',
       wasmBytes,
       sf2Bytes,
-    })
+    } as SoundFont2SynthProcessorMessageData)
   }
 
   onprocessorerror = (err: Event) => {
@@ -46,57 +50,65 @@ export class SoundFont2SynthNode
     )
   }
 
-  onmessage(event: MessageEvent) {
-    const data = event.data;
-    if (data.type === SoundFont2SynthMessageType.WasmModuleLoaded) {
-      this.port.postMessage({
-        type: SoundFont2SynthMessageType.InitSynth,
-        sampleRate: this.context.sampleRate,
-      })
-    } else if (data.type === SoundFont2SynthMessageType.GotPresetHeaders) {
-      _presetHeaders = data.presetHeaders;
+  onmessage(event: MessageEvent<SoundFont2SynthNodeMessageData>) {
+    const data = event.data
+
+    switch (data.type) {
+      case 'wasm-module-loaded':
+        this.port.postMessage({
+          type: 'init-synth',
+          sampleRate: this.context.sampleRate,
+        } as SoundFont2SynthProcessorMessageData)
+        break
+      case 'got-preset-headers':
+        _presetHeaders = data.presetHeaders
+        break
+      default:
+        break
     }
   }
 
   noteOn(channel: number, key: number, vel: number, delayTime: number) {
     this.port.postMessage({
-      type: SoundFont2SynthMessageType.NoteOn,
+      type: 'note-on',
       channel,
       key,
       vel,
       delayTime: delayTime * this.sampleRate,
-    })
+    } as SoundFont2SynthProcessorMessageData)
   }
 
   noteOff(channel: number, key: number, delayTime: number) {
     this.port.postMessage({
-      type: SoundFont2SynthMessageType.NoteOff,
+      type: 'note-off',
       channel,
       key,
       delayTime: delayTime * this.sampleRate,
-    })
+    } as SoundFont2SynthProcessorMessageData)
   }
 
   getPresetHeaders(): Promise<PresetHeader[]> {
-    _presetHeaders = undefined;
+    _presetHeaders = undefined
     this.port.postMessage({
-      type: SoundFont2SynthMessageType.GetPresetHeaders
-    })
+      type: 'get-preset-headers',
+    } as SoundFont2SynthProcessorMessageData)
 
     return new Promise(waitToGetPresetHeaders)
   }
 
   setProgram(channel: number, bank: number, preset: number) {
     this.port.postMessage({
-      type: SoundFont2SynthMessageType.SetProgram,
+      type: 'set-program',
       channel,
       bank,
-      preset
-    })
+      preset,
+    } as SoundFont2SynthProcessorMessageData)
   }
 }
 
-const waitToGetPresetHeaders = (resolve: (value: (PromiseLike<any[]> | any[])) => void) => {
+const waitToGetPresetHeaders = (
+  resolve: (value: PromiseLike<any[]> | any[]) => void
+) => {
   if (_presetHeaders !== undefined) {
     const presetHeaders = _presetHeaders
     _presetHeaders = undefined
