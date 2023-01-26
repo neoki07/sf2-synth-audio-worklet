@@ -107,7 +107,7 @@ export class SoundFont2SynthNode
 }
 
 const waitToGetPresetHeaders = (
-  resolve: (value: PromiseLike<any[]> | any[]) => void
+  resolve: (value: PromiseLike<PresetHeader[]> | PresetHeader[]) => void
 ) => {
   if (_presetHeaders !== undefined) {
     const presetHeaders = _presetHeaders

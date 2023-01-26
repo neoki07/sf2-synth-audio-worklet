@@ -16,6 +16,7 @@ interface AudioWorkletProcessorImpl extends AudioWorkletProcessor {
 }
 
 interface AudioWorkletProcessorConstructor {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   new (options: any): AudioWorkletProcessorImpl
 }
 
