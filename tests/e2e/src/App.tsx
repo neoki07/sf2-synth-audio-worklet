@@ -49,13 +49,19 @@ export const App: FC = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center text-gray-800 space-y-12">
-      <Button width={816} disabled={!!node} onClick={start}>
+      <Button
+        data-testid="start-button"
+        width={816}
+        disabled={!!node}
+        onClick={start}
+      >
         Start
       </Button>
       <div className="flex space-x-4">
         {keys.map(({ color, label, key }) => (
           <Button
             key={key}
+            data-testid={`key-${key}-button`}
             width={48}
             color={color}
             disabled={!node}
