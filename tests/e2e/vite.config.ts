@@ -5,4 +5,9 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   base: '/sf2-synth-audio-worklet/',
   plugins: [react()],
+  server: {
+    fs: {
+      allow: ['src', '../../dist'],
+    },
+  },
 })
