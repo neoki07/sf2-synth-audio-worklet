@@ -1,5 +1,6 @@
 import { test, expect, Page } from '@playwright/test'
 
+const baseURL = '/sf2-synth-audio-worklet/'
 const keys = [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72]
 
 const waitSetupSoundFont2Synth = async (page: Page) => {
@@ -7,7 +8,7 @@ const waitSetupSoundFont2Synth = async (page: Page) => {
 }
 
 test('start button should be visible and enabled', async ({ page }) => {
-  await page.goto('/')
+  await page.goto(baseURL)
 
   const startButton = await page.getByTestId('start-button')
 
@@ -18,7 +19,7 @@ test('start button should be visible and enabled', async ({ page }) => {
 test('start button should be visible and disabled after the start', async ({
   page,
 }) => {
-  await page.goto('/')
+  await page.goto(baseURL)
 
   const startButton = await page.getByTestId('start-button')
   await startButton.click()
@@ -30,7 +31,7 @@ test('start button should be visible and disabled after the start', async ({
 })
 
 test('key buttons should be visible and disabled', async ({ page }) => {
-  await page.goto('/')
+  await page.goto(baseURL)
 
   for (const key of keys) {
     const keyButton = await page.getByTestId(`key-${key}-button`)
@@ -43,7 +44,7 @@ test('key buttons should be visible and disabled', async ({ page }) => {
 test('key buttons should be visible and enabled after the start', async ({
   page,
 }) => {
-  await page.goto('/')
+  await page.goto(baseURL)
 
   await page.getByTestId('start-button').click()
   await waitSetupSoundFont2Synth(page)
