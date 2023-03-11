@@ -1,10 +1,12 @@
-# Workflow for building and deploying an example site to GitHub Pages
-name: Deploy example site to Pages
+# Workflow for building and deploying E2E test app site to GitHub Pages
+name: Deploy E2E Test App
 
 on:
   # Runs on pushes targeting the default branch
-  push:
-    branches: ['main']
+  workflow_run:
+    workflows: [Playwright Tests]
+    branches: [main]
+    types: [completed]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,26 +23,25 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BUILD_PATH: examples/react-piano-demo
+  E2E_PATH: tests/e2e
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         id: pnpm-install
         with:
-          version: '7'
+          version: 7
           run_install: false
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -54,16 +55,16 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - name: Install dependencies of library
+      - name: Install library dependencies
         run: pnpm install
       - name: Build library
         run: pnpm build
-      - name: Install dependencies of example app
+      - name: Install E2E test dependencies
         run: pnpm install
-        working-directory: ${{ env.BUILD_PATH }}
-      - name: Build example app
+        working-directory: ${{ env.E2E_PATH }}
+      - name: Build E2e test app
         run: pnpm build
-        working-directory: ${{ env.BUILD_PATH }}
+        working-directory: ${{ env.E2E_PATH }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
