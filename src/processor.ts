@@ -10,7 +10,7 @@ import {
   SoundFont2SynthProcessorMessageData,
 } from '@/types'
 
-interface ISoundFont2SynthProcessor {
+interface SoundFont2SynthProcessor {
   noteOn(channel: number, key: number, vel: number, delayTime: number): void
 
   noteOff(channel: number, key: number, delayTime: number): void
@@ -19,9 +19,9 @@ interface ISoundFont2SynthProcessor {
   setProgram(channel: number, bank: number, preset: number): void
 }
 
-class SoundFont2SynthProcessor
+class SoundFont2SynthProcessorImpl
   extends AudioWorkletProcessor
-  implements ISoundFont2SynthProcessor
+  implements SoundFont2SynthProcessor
 {
   synth?: WasmSoundFontSynth
   sf2Bytes?: ArrayBuffer
@@ -112,4 +112,4 @@ class SoundFont2SynthProcessor
   }
 }
 
-registerProcessor(PROCESSOR_NAME, SoundFont2SynthProcessor)
+registerProcessor(PROCESSOR_NAME, SoundFont2SynthProcessorImpl)

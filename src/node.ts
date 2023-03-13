@@ -4,7 +4,7 @@ import {
   SoundFont2SynthProcessorMessageData,
 } from '@/types'
 
-interface ISoundFont2SynthNode {
+export interface SoundFont2SynthNode {
   noteOn(channel: number, key: number, vel: number, delayTime: number): void
 
   noteOff(channel: number, key: number, delayTime: number): void
@@ -15,9 +15,9 @@ interface ISoundFont2SynthNode {
 
 let _presetHeaders: PresetHeader[] | undefined = undefined
 
-export class SoundFont2SynthNode
+export class SoundFont2SynthNodeImpl
   extends AudioWorkletNode
-  implements ISoundFont2SynthNode
+  implements SoundFont2SynthNode
 {
   sampleRate: number
 
