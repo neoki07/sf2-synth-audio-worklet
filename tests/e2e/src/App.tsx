@@ -1,9 +1,9 @@
-import { Button } from './Button'
-import {
-  ISoundFont2SynthNode,
-  createSoundFont2SynthNode,
-} from '../../../dist/sf2-synth-audio-worklet'
 import { FC, useCallback, useState } from 'react'
+import {
+  createSoundFont2SynthNode,
+  ISoundFont2SynthNode,
+} from '../../../dist/sf2-synth-audio-worklet'
+import { Button } from './Button'
 
 const sf2URL = new URL('./assets/GeneralUser GS v1.471.sf2', import.meta.url)
 

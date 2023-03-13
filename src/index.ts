@@ -1,5 +1,5 @@
 import { PROCESSOR_NAME } from './constants'
-import { type SoundFont2SynthNode, SoundFont2SynthNodeImpl } from './node'
+import { SoundFont2SynthNodeImpl, type SoundFont2SynthNode } from './node'
 import { PresetHeader } from './types'
 // eslint-disable-next-line
 // @ts-ignore
