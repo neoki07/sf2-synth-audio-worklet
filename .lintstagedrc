@@ -1,4 +1,4 @@
 {
-  "./**/*.{js,jsx,ts,tsx}": "pnpm lint",
-  "./**/*.{js,jsx,ts,tsx,html,css,json}": "pnpm format"
+  "./**/*.{js,jsx,ts,tsx}": "nr lint",
+  "./**/*.{js,jsx,ts,tsx,html,css,json}": "nr format"
 }
