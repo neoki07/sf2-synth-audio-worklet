@@ -4,7 +4,7 @@ name: Deploy E2E Test App
 on:
   # Runs on pushes targeting the default branch
   workflow_run:
-    workflows: [Playwright Tests]
+    workflows: [Static Code Analysis, Playwright Tests]
     branches: [main]
     types: [completed]
 
