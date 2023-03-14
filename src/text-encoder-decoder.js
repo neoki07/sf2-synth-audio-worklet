@@ -13,17 +13,15 @@
 
 // http://encoding.spec.whatwg.org/#textencoder
 ;(function (window) {
-  function TextEncoder() {
-    return
-  }
+  function TextEncoder() {}
   TextEncoder.prototype.encode = function (string) {
-    var octets = []
-    var length = string.length
-    var i = 0
+    const octets = []
+    const length = string.length
+    let i = 0
     while (i < length) {
-      var codePoint = string.codePointAt(i)
-      var c = 0
-      var bits = 0
+      const codePoint = string.codePointAt(i)
+      let c = 0
+      let bits = 0
       if (codePoint <= 0x0000007f) {
         c = 0
         bits = 0x00
@@ -48,19 +46,17 @@
     return octets
   }
   globalThis.TextEncoder = TextEncoder
-  if (!window['TextEncoder']) window['TextEncoder'] = TextEncoder
+  if (!window.TextEncoder) window.TextEncoder = TextEncoder
 
-  function TextDecoder() {
-    return
-  }
+  function TextDecoder() {}
   TextDecoder.prototype.decode = function (octets) {
     if (!octets) return ''
-    var string = ''
-    var i = 0
+    let string = ''
+    let i = 0
     while (i < octets.length) {
-      var octet = octets[i]
-      var bytesNeeded = 0
-      var codePoint = 0
+      let octet = octets[i]
+      let bytesNeeded = 0
+      let codePoint = 0
       if (octet <= 0x7f) {
         bytesNeeded = 0
         codePoint = octet & 0xff
@@ -75,7 +71,7 @@
         codePoint = octet & 0x07
       }
       if (octets.length - i - bytesNeeded > 0) {
-        var k = 0
+        let k = 0
         while (k < bytesNeeded) {
           octet = octets[i + k + 1]
           codePoint = (codePoint << 6) | (octet & 0x3f)
@@ -91,11 +87,11 @@
     return string
   }
   globalThis.TextDecoder = TextDecoder
-  if (!window['TextDecoder']) window['TextDecoder'] = TextDecoder
+  if (!window.TextDecoder) window.TextDecoder = TextDecoder
 })(
-  typeof globalThis == '' + void 0
-    ? typeof global == '' + void 0
-      ? typeof self == '' + void 0
+  typeof globalThis === 'undefined'
+    ? typeof global === 'undefined'
+      ? typeof self === 'undefined'
         ? undefined
         : self
       : global

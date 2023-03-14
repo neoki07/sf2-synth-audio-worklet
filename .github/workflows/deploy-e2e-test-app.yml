@@ -4,7 +4,7 @@ name: Deploy E2E Test App
 on:
   # Runs on pushes targeting the default branch
   workflow_run:
-    workflows: [Playwright Tests]
+    workflows: [Static Code Analysis, Playwright Tests]
     branches: [main]
     types: [completed]
 
@@ -32,31 +32,13 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - uses: pnpm/action-setup@v2
         name: Install pnpm
-        id: pnpm-install
         with:
           version: 7
-          run_install: false
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-      - name: Install library dependencies
-        run: pnpm install
+          run_install: true
       - name: Build library
         run: pnpm build
       - name: Install E2E test dependencies

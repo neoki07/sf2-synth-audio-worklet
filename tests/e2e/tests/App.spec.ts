@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test'
+import { expect, Page, test } from '@playwright/test'
 
 const baseURL = '/sf2-synth-audio-worklet/'
 const keys = [60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72]

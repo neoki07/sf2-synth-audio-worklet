@@ -1,13 +1,13 @@
-import { Button } from './Button'
+import { useCallback, useState, type FC } from 'react'
 import {
-  ISoundFont2SynthNode,
   createSoundFont2SynthNode,
+  type SoundFont2SynthNode,
 } from '../../../dist/sf2-synth-audio-worklet'
-import { FC, useCallback, useState } from 'react'
+import { Button } from './Button'
 
 const sf2URL = new URL('./assets/GeneralUser GS v1.471.sf2', import.meta.url)
 
-const keys: { color: 'black' | 'white'; label: string; key: number }[] = [
+const keys: Array<{ color: 'black' | 'white'; label: string; key: number }> = [
   { color: 'white', label: 'C', key: 60 },
   { color: 'black', label: 'C#', key: 61 },
   { color: 'white', label: 'D', key: 62 },
@@ -24,13 +24,21 @@ const keys: { color: 'black' | 'white'; label: string; key: number }[] = [
 ]
 
 export const App: FC = () => {
-  const [node, setNode] = useState<ISoundFont2SynthNode | undefined>(undefined)
+  const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
 
-  const start = useCallback(async () => {
+  const start = useCallback(() => {
     const audioContext = new AudioContext()
-    const node = await createSoundFont2SynthNode(audioContext, sf2URL)
-    node.connect(audioContext.destination)
-    setNode(node)
+    createSoundFont2SynthNode(audioContext, sf2URL)
+      .then((node) => {
+        node.connect(audioContext.destination)
+        setNode(node)
+      })
+      .catch((err) => {
+        throw new Error(
+          'An error occurred while creating `SoundFont2SynthNode`:',
+          err
+        )
+      })
   }, [])
 
   const playNote = useCallback(
@@ -52,7 +60,7 @@ export const App: FC = () => {
       <Button
         data-testid="start-button"
         width={816}
-        disabled={!!node}
+        disabled={!(node == null)}
         onClick={start}
       >
         Start
@@ -64,9 +72,13 @@ export const App: FC = () => {
             data-testid={`key-${key}-button`}
             width={48}
             color={color}
-            disabled={!node}
-            onMouseDown={() => playNote(key)}
-            onMouseUp={() => stopNote(key)}
+            disabled={node == null}
+            onMouseDown={() => {
+              playNote(key)
+            }}
+            onMouseUp={() => {
+              stopNote(key)
+            }}
           >
             {label}
           </Button>

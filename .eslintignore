@@ -3,9 +3,11 @@
 .vscode
 coverage
 dist
+target
 node_modules
 vite.config.ts
-jest.config.ts
-examples
+playwright.config.ts
+pnpm-lock.yaml
+**/*.spec.ts
 
 src/generated

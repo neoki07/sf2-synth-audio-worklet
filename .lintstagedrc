@@ -1,0 +1,4 @@
+{
+  "./**/*.{js,jsx,ts,tsx}": "nr lint",
+  "./**/*.{js,jsx,ts,tsx,html,css,json,yaml,yml}": "nr format"
+}

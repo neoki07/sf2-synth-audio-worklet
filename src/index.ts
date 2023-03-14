@@ -1,6 +1,6 @@
 import { PROCESSOR_NAME } from './constants'
-import { SoundFont2SynthNode } from './node'
-import { PresetHeader } from './types'
+import { SoundFont2SynthNodeImpl, type SoundFont2SynthNode } from './node'
+import { type PresetHeader } from './types'
 // eslint-disable-next-line
 // @ts-ignore
 import processorRaw from './generated/processor.js?raw'
@@ -41,7 +41,7 @@ async function createSoundFont2SynthNode(
 
     // Create the AudioWorkletNode which enables the main JavaScript thread to
     // communicate with the audio processor (which runs in a Worklet).
-    node = new SoundFont2SynthNode(context, PROCESSOR_NAME)
+    node = new SoundFont2SynthNodeImpl(context, PROCESSOR_NAME)
 
     const sf2Response = await fetch(sf2URL)
     const sf2Bytes = await sf2Response.arrayBuffer()
@@ -65,5 +65,5 @@ async function createSoundFont2SynthNode(
   return node
 }
 
-export { SoundFont2SynthNode, createSoundFont2SynthNode }
+export { type SoundFont2SynthNode, createSoundFont2SynthNode }
 export type { PresetHeader }

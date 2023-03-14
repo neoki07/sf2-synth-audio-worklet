@@ -1,10 +1,10 @@
-import { ComponentPropsWithoutRef, FC } from 'react'
+import { type ComponentPropsWithoutRef, type FC } from 'react'
 
 type Props =
-  | {
+  | ComponentPropsWithoutRef<'button'> & {
       width: number
       color?: 'black' | 'white'
-    } & ComponentPropsWithoutRef<'button'>
+    }
 
 export const Button: FC<Props> = ({
   width,

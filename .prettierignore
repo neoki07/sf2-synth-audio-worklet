@@ -3,9 +3,8 @@
 .vscode
 coverage
 dist
+target
 node_modules
-vite.config.ts
-jest.config.ts
-examples
+pnpm-lock.yaml
 
 src/generated
