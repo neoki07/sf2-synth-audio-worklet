@@ -14,7 +14,7 @@ export const Button: FC<Props> = ({
 }) => {
   return (
     <button
-      style={{ width: `${width}px` }}
+      style={{ width: `${width.toString()}px` }}
       className={`focus:outline-none active:ring-2 active:ring-slate-400 active:ring-offset-2 active:ring-offset-slate-50 font-semibold h-12 rounded-lg flex items-center justify-center ${
         color === 'black'
           ? 'bg-slate-900 enabled:hover:bg-slate-700 text-white disabled:opacity-25'
