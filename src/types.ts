@@ -1,4 +1,4 @@
-export type PresetHeader = {
+export interface PresetHeader {
   name: string
   bag_id: number
   bank: number

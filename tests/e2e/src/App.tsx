@@ -1,13 +1,13 @@
-import { FC, useCallback, useState } from 'react'
+import { useCallback, useState, type FC } from 'react'
 import {
   createSoundFont2SynthNode,
-  ISoundFont2SynthNode,
+  type ISoundFont2SynthNode,
 } from '../../../dist/sf2-synth-audio-worklet'
 import { Button } from './Button'
 
 const sf2URL = new URL('./assets/GeneralUser GS v1.471.sf2', import.meta.url)
 
-const keys: { color: 'black' | 'white'; label: string; key: number }[] = [
+const keys: Array<{ color: 'black' | 'white'; label: string; key: number }> = [
   { color: 'white', label: 'C', key: 60 },
   { color: 'black', label: 'C#', key: 61 },
   { color: 'white', label: 'D', key: 62 },
@@ -65,8 +65,12 @@ export const App: FC = () => {
             width={48}
             color={color}
             disabled={!node}
-            onMouseDown={() => playNote(key)}
-            onMouseUp={() => stopNote(key)}
+            onMouseDown={() => {
+              playNote(key)
+            }}
+            onMouseUp={() => {
+              stopNote(key)
+            }}
           >
             {label}
           </Button>

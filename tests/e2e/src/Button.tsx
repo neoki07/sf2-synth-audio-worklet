@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, FC } from 'react'
+import { type ComponentPropsWithoutRef, type FC } from 'react'
 
 type Props =
   | {

@@ -1,19 +1,19 @@
 import {
-  PresetHeader,
-  SoundFont2SynthNodeMessageData,
-  SoundFont2SynthProcessorMessageData,
+  type PresetHeader,
+  type SoundFont2SynthNodeMessageData,
+  type SoundFont2SynthProcessorMessageData,
 } from '@/types'
 
 export interface SoundFont2SynthNode {
-  noteOn(channel: number, key: number, vel: number, delayTime: number): void
+  noteOn: (channel: number, key: number, vel: number, delayTime: number) => void
 
-  noteOff(channel: number, key: number, delayTime: number): void
+  noteOff: (channel: number, key: number, delayTime: number) => void
 
-  getPresetHeaders(): Promise<PresetHeader[]>
-  setProgram(channel: number, bank: number, preset: number): void
+  getPresetHeaders: () => Promise<PresetHeader[]>
+  setProgram: (channel: number, bank: number, preset: number) => void
 }
 
-let _presetHeaders: PresetHeader[] | undefined = undefined
+let _presetHeaders: PresetHeader[] | undefined
 
 export class SoundFont2SynthNodeImpl
   extends AudioWorkletNode
@@ -35,7 +35,9 @@ export class SoundFont2SynthNodeImpl
    * @param {ArrayBuffer} sf2Bytes
    */
   init(wasmBytes: ArrayBuffer, sf2Bytes: ArrayBuffer) {
-    this.port.onmessage = (event) => this.onmessage(event)
+    this.port.onmessage = (event) => {
+      this.onmessage(event)
+    }
 
     this.port.postMessage({
       type: 'send-wasm-module',
@@ -87,13 +89,13 @@ export class SoundFont2SynthNodeImpl
     } as SoundFont2SynthProcessorMessageData)
   }
 
-  getPresetHeaders(): Promise<PresetHeader[]> {
+  async getPresetHeaders(): Promise<PresetHeader[]> {
     _presetHeaders = undefined
     this.port.postMessage({
       type: 'get-preset-headers',
     } as SoundFont2SynthProcessorMessageData)
 
-    return new Promise(waitToGetPresetHeaders)
+    return await new Promise(waitToGetPresetHeaders)
   }
 
   setProgram(channel: number, bank: number, preset: number) {

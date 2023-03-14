@@ -2,21 +2,21 @@ import { PROCESSOR_NAME } from './constants.js'
 import './TextEncoder.js'
 
 import {
-  PresetHeader,
-  SoundFont2SynthNodeMessageData,
-  SoundFont2SynthProcessorMessageData,
+  type PresetHeader,
+  type SoundFont2SynthNodeMessageData,
+  type SoundFont2SynthProcessorMessageData,
 } from '@/types'
 import init, {
   WasmSoundFontSynth,
 } from './generated/wasm/sf2_synth_audio_worklet_wasm'
 
 interface SoundFont2SynthProcessor {
-  noteOn(channel: number, key: number, vel: number, delayTime: number): void
+  noteOn: (channel: number, key: number, vel: number, delayTime: number) => void
 
-  noteOff(channel: number, key: number, delayTime: number): void
+  noteOff: (channel: number, key: number, delayTime: number) => void
 
-  getPresetHeaders(): void
-  setProgram(channel: number, bank: number, preset: number): void
+  getPresetHeaders: () => void
+  setProgram: (channel: number, bank: number, preset: number) => void
 }
 
 class SoundFont2SynthProcessorImpl
@@ -29,7 +29,9 @@ class SoundFont2SynthProcessorImpl
   constructor() {
     super()
 
-    this.port.onmessage = (event) => this.onmessage(event)
+    this.port.onmessage = (event) => {
+      this.onmessage(event)
+    }
 
     this.synth = undefined
     this.sf2Bytes = undefined
@@ -48,7 +50,7 @@ class SoundFont2SynthProcessorImpl
         this.sf2Bytes = data.sf2Bytes
         break
       case 'init-synth':
-        if (!this.sf2Bytes) {
+        if (this.sf2Bytes == null) {
           throw new Error('sf2Bytes is undefined')
         }
 
@@ -75,17 +77,17 @@ class SoundFont2SynthProcessorImpl
   }
 
   noteOn(channel: number, key: number, vel: number, delayTime?: number) {
-    if (!this.synth) return
+    if (this.synth == null) return
     this.synth.note_on(channel, key, vel, delayTime)
   }
 
   noteOff(channel: number, key: number, delayTime?: number) {
-    if (!this.synth) return
+    if (this.synth == null) return
     this.synth.note_off(channel, key, delayTime)
   }
 
   getPresetHeaders() {
-    if (!this.synth) return
+    if (this.synth == null) return
     const presetHeaders: PresetHeader[] = this.synth.get_preset_headers()
     this.port.postMessage({
       type: 'got-preset-headers',
@@ -94,12 +96,12 @@ class SoundFont2SynthProcessorImpl
   }
 
   setProgram(channel: number, bank: number, preset: number) {
-    if (!this.synth) return
+    if (this.synth == null) return
     this.synth.program_select(channel, bank, preset)
   }
 
   process(_inputs: Float32Array[][], outputs: Float32Array[][]): boolean {
-    if (!this.synth) return true
+    if (this.synth == null) return true
 
     const outputChannels = outputs[0]
     const blockSize = outputChannels[0].length
