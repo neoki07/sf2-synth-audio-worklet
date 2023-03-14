@@ -1,7 +1,7 @@
 import { useCallback, useState, type FC } from 'react'
 import {
   createSoundFont2SynthNode,
-  type ISoundFont2SynthNode,
+  type SoundFont2SynthNode,
 } from '../../../dist/sf2-synth-audio-worklet'
 import { Button } from './Button'
 
@@ -24,7 +24,7 @@ const keys: Array<{ color: 'black' | 'white'; label: string; key: number }> = [
 ]
 
 export const App: FC = () => {
-  const [node, setNode] = useState<ISoundFont2SynthNode | undefined>(undefined)
+  const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
 
   const start = useCallback(async () => {
     const audioContext = new AudioContext()
@@ -52,7 +52,7 @@ export const App: FC = () => {
       <Button
         data-testid="start-button"
         width={816}
-        disabled={!!node}
+        disabled={!(node == null)}
         onClick={start}
       >
         Start
@@ -64,7 +64,7 @@ export const App: FC = () => {
             data-testid={`key-${key}-button`}
             width={48}
             color={color}
-            disabled={!node}
+            disabled={node == null}
             onMouseDown={() => {
               playNote(key)
             }}

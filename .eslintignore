@@ -5,8 +5,5 @@ coverage
 dist
 node_modules
 vite.config.ts
-jest.config.ts
 
 src/generated
-
-tests
