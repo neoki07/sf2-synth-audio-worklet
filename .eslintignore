@@ -3,9 +3,10 @@
 .vscode
 coverage
 dist
+target
 node_modules
 vite.config.ts
 playwright.config.ts
+**/*.spec.ts
 
 src/generated
-tests/e2e/tests

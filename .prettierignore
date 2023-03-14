@@ -3,6 +3,7 @@
 .vscode
 coverage
 dist
+target
 node_modules
 
 src/generated
