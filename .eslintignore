@@ -5,7 +5,7 @@ coverage
 dist
 node_modules
 vite.config.ts
+playwright.config.ts
 
 src/generated
-
-tests
+tests/e2e/tests

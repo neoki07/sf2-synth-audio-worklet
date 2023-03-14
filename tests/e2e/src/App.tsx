@@ -26,11 +26,19 @@ const keys: Array<{ color: 'black' | 'white'; label: string; key: number }> = [
 export const App: FC = () => {
   const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
 
-  const start = useCallback(async () => {
+  const start = useCallback(() => {
     const audioContext = new AudioContext()
-    const node = await createSoundFont2SynthNode(audioContext, sf2URL)
-    node.connect(audioContext.destination)
-    setNode(node)
+    createSoundFont2SynthNode(audioContext, sf2URL)
+      .then((node) => {
+        node.connect(audioContext.destination)
+        setNode(node)
+      })
+      .catch((err) => {
+        throw new Error(
+          'An error occurred while creating `SoundFont2SynthNode`:',
+          err
+        )
+      })
   }, [])
 
   const playNote = useCallback(

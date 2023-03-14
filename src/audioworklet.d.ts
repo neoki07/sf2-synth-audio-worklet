@@ -1,13 +1,14 @@
-interface IAudioWorkletProcessor {
+interface AudioWorkletProcessor {
   readonly port: MessagePort
 }
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 declare let AudioWorkletProcessor: {
-  prototype: IAudioWorkletProcessor
-  new (): IAudioWorkletProcessor
+  prototype: AudioWorkletProcessor
+  new (): AudioWorkletProcessor
 }
 
-interface AudioWorkletProcessorImpl extends IAudioWorkletProcessor {
+interface AudioWorkletProcessorImpl extends AudioWorkletProcessor {
   process: (
     inputs: Float32Array[][],
     outputs: Float32Array[][],

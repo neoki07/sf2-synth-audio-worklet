@@ -10,7 +10,7 @@ import init, {
   WasmSoundFontSynth,
 } from './generated/wasm/sf2_synth_audio_worklet_wasm'
 
-interface SoundFont2SynthProcessor {
+interface SoundFont2SynthProcessor extends AudioWorkletProcessor {
   noteOn: (channel: number, key: number, vel: number, delayTime: number) => void
 
   noteOff: (channel: number, key: number, delayTime: number) => void

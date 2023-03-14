@@ -4,7 +4,7 @@ import {
   type SoundFont2SynthProcessorMessageData,
 } from '@/types'
 
-export interface SoundFont2SynthNode {
+export interface SoundFont2SynthNode extends AudioWorkletNode {
   noteOn: (channel: number, key: number, vel: number, delayTime: number) => void
 
   noteOff: (channel: number, key: number, delayTime: number) => void
