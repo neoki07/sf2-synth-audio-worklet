@@ -21,7 +21,7 @@ module.exports = defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       name: getPackageNameCamelCase(),
       formats: ['es'],
-      fileName: `${getPackageName()}.mjs`,
+      fileName: getPackageName(),
     },
   },
 })

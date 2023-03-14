@@ -89,9 +89,9 @@
   globalThis.TextDecoder = TextDecoder
   if (!window.TextDecoder) window.TextDecoder = TextDecoder
 })(
-  typeof globalThis === '' + void 0
-    ? typeof global === '' + void 0
-      ? typeof self === '' + void 0
+  typeof globalThis === 'undefined'
+    ? typeof global === 'undefined'
+      ? typeof self === 'undefined'
         ? undefined
         : self
       : global

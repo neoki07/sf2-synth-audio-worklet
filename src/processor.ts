@@ -1,5 +1,5 @@
 import { PROCESSOR_NAME } from './constants.js'
-import './TextEncoder.js'
+import './text-encoder-decoder.js'
 
 import {
   type PresetHeader,
@@ -37,16 +37,21 @@ class SoundFont2SynthProcessorImpl
     this.sf2Bytes = undefined
   }
 
-  onmessage(event: MessageEvent<SoundFont2SynthProcessorMessageData>) {
+  onmessage(event: MessageEvent<SoundFont2SynthProcessorMessageData>): void {
     const data = event.data
 
     switch (data.type) {
       case 'send-wasm-module':
-        init(WebAssembly.compile(data.wasmBytes)).then(() => {
-          this.port.postMessage({
-            type: 'wasm-module-loaded',
-          } as SoundFont2SynthNodeMessageData)
-        })
+        init(WebAssembly.compile(data.wasmBytes))
+          .then(() => {
+            const data: SoundFont2SynthNodeMessageData = {
+              type: 'wasm-module-loaded',
+            }
+            this.port.postMessage(data)
+          })
+          .catch(() => {
+            console.error('An error occurred during wasm initialization')
+          })
         this.sf2Bytes = data.sf2Bytes
         break
       case 'init-synth':
@@ -76,26 +81,27 @@ class SoundFont2SynthProcessorImpl
     }
   }
 
-  noteOn(channel: number, key: number, vel: number, delayTime?: number) {
+  noteOn(channel: number, key: number, vel: number, delayTime?: number): void {
     if (this.synth == null) return
     this.synth.note_on(channel, key, vel, delayTime)
   }
 
-  noteOff(channel: number, key: number, delayTime?: number) {
+  noteOff(channel: number, key: number, delayTime?: number): void {
     if (this.synth == null) return
     this.synth.note_off(channel, key, delayTime)
   }
 
-  getPresetHeaders() {
+  getPresetHeaders(): void {
     if (this.synth == null) return
     const presetHeaders: PresetHeader[] = this.synth.get_preset_headers()
-    this.port.postMessage({
+    const data: SoundFont2SynthNodeMessageData = {
       type: 'got-preset-headers',
       presetHeaders,
-    } as SoundFont2SynthNodeMessageData)
+    }
+    this.port.postMessage(data)
   }
 
-  setProgram(channel: number, bank: number, preset: number) {
+  setProgram(channel: number, bank: number, preset: number): void {
     if (this.synth == null) return
     this.synth.program_select(channel, bank, preset)
   }
@@ -105,9 +111,9 @@ class SoundFont2SynthProcessorImpl
 
     const outputChannels = outputs[0]
     const blockSize = outputChannels[0].length
-    const next_block = this.synth.read_next_block(blockSize)
-    outputChannels[0].set(next_block[0])
-    outputChannels.length > 1 && outputChannels[1].set(next_block[1])
+    const nextBlock = this.synth.read_next_block(blockSize)
+    outputChannels[0].set(nextBlock[0])
+    outputChannels.length > 1 && outputChannels[1].set(nextBlock[1])
 
     // Returning true tells the Audio system to keep going.
     return true
