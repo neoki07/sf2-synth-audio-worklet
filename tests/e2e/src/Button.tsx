@@ -1,10 +1,10 @@
 import { type ComponentPropsWithoutRef, type FC } from 'react'
 
 type Props =
-  | {
+  | ComponentPropsWithoutRef<'button'> & {
       width: number
       color?: 'black' | 'white'
-    } & ComponentPropsWithoutRef<'button'>
+    }
 
 export const Button: FC<Props> = ({
   width,
@@ -14,7 +14,7 @@ export const Button: FC<Props> = ({
 }) => {
   return (
     <button
-      style={{ width: `${width.toString()}px` }}
+      style={{ width: `${width}px` }}
       className={`focus:outline-none active:ring-2 active:ring-slate-400 active:ring-offset-2 active:ring-offset-slate-50 font-semibold h-12 rounded-lg flex items-center justify-center ${
         color === 'black'
           ? 'bg-slate-900 enabled:hover:bg-slate-700 text-white disabled:opacity-25'
