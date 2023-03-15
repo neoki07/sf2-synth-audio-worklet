@@ -1,3 +1,5 @@
 {
-  "*": ["nr lint", "nr format"]
+  "*.{js,jsx,ts,tsx}": "nr lint",
+  "*": "nr format",
+  "*.rs": ["nr lint:wasm", "nr format:wasm"]
 }

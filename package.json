@@ -26,8 +26,11 @@
     "test:e2e": "cd tests/e2e && nr test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "lint:wasm": "cd wasm-src && cargo clippy -- -D warnings",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "format:wasm": "cd wasm-src && cargo fmt",
+    "format:check:wasm": "cd wasm-src && cargo fmt --check",
     "prepare": "husky install && husky set .husky/pre-commit 'nix lint-staged' && git add .husky/pre-commit",
     "uninstall-husky": "nun husky --no-save && git config --unset core.hooksPath && nix rimraf .husky"
   },
