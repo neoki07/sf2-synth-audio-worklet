@@ -1,6 +1,6 @@
 {
   "name": "sf2-synth-audio-worklet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/sf2-synth-audio-worklet.cjs",
   "module": "./dist/sf2-synth-audio-worklet.mjs",
   "types": "./dist/sf2-synth-audio-worklet.d.ts",
