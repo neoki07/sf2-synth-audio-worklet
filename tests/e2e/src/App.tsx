@@ -2,7 +2,7 @@ import { useCallback, useState, type FC } from 'react'
 import {
   createSoundFont2SynthNode,
   type SoundFont2SynthNode,
-} from '../../../dist/sf2-synth-audio-worklet'
+} from 'sf2-synth-audio-worklet'
 import { Button } from './Button'
 
 const sf2URL = new URL('./assets/GeneralUser GS v1.471.sf2', import.meta.url)
