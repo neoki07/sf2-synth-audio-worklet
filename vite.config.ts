@@ -1,4 +1,4 @@
-import path from 'path'
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import packageJson from './package.json'
@@ -16,13 +16,13 @@ const getPackageNameCamelCase = () => {
 }
 
 module.exports = defineConfig({
-  plugins: [dts({ insertTypesEntry: true })],
+  plugins: [dts()],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/index.ts'),
+      entry: resolve(__dirname, 'src/index.ts'),
       name: getPackageNameCamelCase(),
       formats: ['es'],
-      fileName: getPackageName(),
+      fileName: 'index',
     },
   },
 })
