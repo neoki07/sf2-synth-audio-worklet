@@ -1,8 +1,8 @@
 {
   "name": "sf2-synth-audio-worklet",
   "version": "0.0.4",
-  "description": "",
-  "keywords": [],
+  "description": "An Audio Worklet-based SoundFont2 player for the browser",
+  "keywords": ["synthesizer", "sampler", "audio-worklet", "soundfont2"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/resonance-box/sf2-synth-audio-worklet.git"
