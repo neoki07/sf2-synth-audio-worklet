@@ -1,34 +1,30 @@
-name: Static Code Analysis
+name: Lint and format check
+
 on:
   push:
-    branches: [main]
+    branches: main
   pull_request:
-    branches: [main]
+    branches: main
+
 jobs:
   lint:
     name: Lint
-    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
-        name: Install pnpm
         with:
           version: 7
           run_install: true
-      - name: Run lint script
-        run: pnpm lint
+      - run: pnpm lint
+
   format-check:
     name: Format check
-    timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
         with:
           version: 7
           run_install: true
-      - name: Run format:check script
-        run: pnpm format:check
+      - run: pnpm format:check
