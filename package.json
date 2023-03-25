@@ -1,8 +1,13 @@
 {
   "name": "sf2-synth-audio-worklet",
   "version": "0.0.4",
-  "description": "",
-  "keywords": [],
+  "description": "An Audio Worklet-based SoundFont2 player for the browser",
+  "keywords": [
+    "synthesizer",
+    "sampler",
+    "audio-worklet",
+    "soundfont2"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/resonance-box/sf2-synth-audio-worklet.git"
@@ -48,7 +53,7 @@
     "format:check": "prettier --check .",
     "format:wasm": "cd wasm-src && cargo fmt",
     "format:check:wasm": "cd wasm-src && cargo fmt --check",
-    "prepare": "husky install && husky set .husky/pre-commit 'pnpm exec lint-staged' && git add .husky/pre-commit",
+    "prepare": "husky install && husky set .husky/pre-commit 'lint-staged' && git add .husky/pre-commit",
     "uninstall-husky": "pnpm remove husky --no-save && git config --unset core.hooksPath && pnpm exec rimraf .husky"
   },
   "devDependencies": {
