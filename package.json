@@ -1,6 +1,6 @@
 {
   "name": "sf2-synth-audio-worklet",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "./dist/sf2-synth-audio-worklet.cjs",
   "module": "./dist/sf2-synth-audio-worklet.mjs",
   "types": "./dist/sf2-synth-audio-worklet.d.ts",
@@ -14,16 +14,14 @@
     "dist"
   ],
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
-    "dev": "vite --host",
-    "build": "nr clean && nr clean:wasm && nr clean:processor && nr build:wasm && nr build:processor && tsc && vite build && dts-bundle-generator --config ./dts-bundle-generator.config.js",
+    "build": "pnpm clean && pnpm clean:wasm && pnpm clean:processor && pnpm build:wasm && pnpm build:processor && tsc && vite build",
     "clean": "rimraf dist",
-    "build:wasm": "nr clean:wasm && wasm-pack build wasm-src --release --target web --out-dir ../src/generated/wasm",
+    "build:wasm": "pnpm clean:wasm && wasm-pack build wasm-src --release --target web --out-dir ../src/generated/wasm",
     "clean:wasm": "rimraf src/generated/wasm",
-    "build:processor": "nr clean:processor && rollup -c rollup-processor.config.mjs",
-    "watch:processor": "nr clean:processor && rollup -c rollup-processor.config.mjs -w",
+    "build:processor": "pnpm clean:processor && rollup -c rollup-processor.config.mjs",
+    "watch:processor": "pnpm clean:processor && rollup -c rollup-processor.config.mjs -w",
     "clean:processor": "rimraf src/generated/processor.js src/generated/processor.js.map",
-    "test:e2e": "cd tests/e2e && nr test",
+    "test:e2e": "cd tests/e2e && pnpm test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "lint:wasm": "cd wasm-src && cargo clippy -- -D warnings",
@@ -31,11 +29,10 @@
     "format:check": "prettier --check .",
     "format:wasm": "cd wasm-src && cargo fmt",
     "format:check:wasm": "cd wasm-src && cargo fmt --check",
-    "prepare": "husky install && husky set .husky/pre-commit 'nix lint-staged' && git add .husky/pre-commit",
-    "uninstall-husky": "nun husky --no-save && git config --unset core.hooksPath && nix rimraf .husky"
+    "prepare": "husky install && husky set .husky/pre-commit 'pnpm exec lint-staged' && git add .husky/pre-commit",
+    "uninstall-husky": "pnpm remove husky --no-save && git config --unset core.hooksPath && pnpm exec rimraf .husky"
   },
   "devDependencies": {
-    "@antfu/ni": "^0.20.0",
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/node": "^18.15.3",
@@ -55,7 +52,8 @@
     "rimraf": "^4.4.0",
     "rollup": "^3.19.1",
     "typescript": "^4.9.5",
-    "vite": "^4.1.4"
+    "vite": "^4.1.4",
+    "vite-plugin-dts": "^2.1.0"
   },
   "directories": {
     "example": "examples"
@@ -73,5 +71,9 @@
   "description": "",
   "publishConfig": {
     "access": "public"
+  },
+  "packageManager": "pnpm@7.26.0",
+  "engines": {
+    "pnpm": ">=7.26.0"
   }
 }

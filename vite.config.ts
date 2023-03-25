@@ -1,5 +1,6 @@
 import path from 'path'
 import { defineConfig } from 'vite'
+import dts from 'vite-plugin-dts'
 import packageJson from './package.json'
 
 const getPackageName = () => {
@@ -15,7 +16,7 @@ const getPackageNameCamelCase = () => {
 }
 
 module.exports = defineConfig({
-  base: './',
+  plugins: [dts({ insertTypesEntry: true })],
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
