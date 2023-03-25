@@ -7,7 +7,7 @@ type Props =
     }
 
 export const Button: FC<Props> = ({
-  width,
+  width = 48,
   color = 'black',
   children,
   ...props
