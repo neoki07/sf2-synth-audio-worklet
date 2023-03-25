@@ -21,6 +21,7 @@
     "build:processor": "pnpm clean:processor && rollup -c rollup-processor.config.mjs",
     "watch:processor": "pnpm clean:processor && rollup -c rollup-processor.config.mjs -w",
     "clean:processor": "rimraf src/generated/processor.js src/generated/processor.js.map",
+    "test": "pnpm test:e2e",
     "test:e2e": "cd tests/e2e && pnpm test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -37,7 +38,6 @@
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/node": "^18.15.3",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
-    "dts-bundle-generator": "^7.2.0",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
@@ -74,6 +74,7 @@
   },
   "packageManager": "pnpm@7.26.0",
   "engines": {
+    "node": "18.x",
     "pnpm": ">=7.26.0"
   }
 }
