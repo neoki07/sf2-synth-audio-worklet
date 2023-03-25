@@ -1,10 +1,14 @@
-name: Lint and format check
+name: ci
 
 on:
   push:
-    branches: main
+    branches: [main]
   pull_request:
-    branches: main
+    branches: [main]
+
+env:
+  WASM_PATH: wasm-src
+  E2E_PATH: tests/e2e
 
 jobs:
   lint:
@@ -28,3 +32,70 @@ jobs:
           version: 7
           run_install: true
       - run: pnpm format:check
+
+  lint-wasm:
+    name: Lint WASM
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WASM_PATH }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - run: cargo clippy -- -D warnings
+
+  format-check-wasm:
+    name: Format check WASM
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WASM_PATH }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - run: cargo fmt --check
+
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    needs: [lint, format-check, lint-wasm, format-check-wasm]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+          run_install: true
+      - run: pnpm build
+      - name: Install E2E test dependencies
+        run: pnpm install
+        working-directory: ${{ env.E2E_PATH }}
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+        working-directory: ${{ env.E2E_PATH }}
+      - name: Run Playwright tests
+        run: pnpm exec playwright test
+        working-directory: ${{ env.E2E_PATH }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: ${{ env.E2E_PATH }}/playwright-report/
+          retention-days: 30
+
+  build-check:
+    name: Build check
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+          run_install: true
+      - run: pnpm build

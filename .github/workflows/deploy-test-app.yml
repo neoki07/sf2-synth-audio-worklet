@@ -1,9 +1,9 @@
-name: Deploy Test App
+name: deploy test app
 
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [Lint and format check of WASM, Lint and format check, E2E Test]
+    workflows: [ci]
     branches: [main]
     types: [completed]
 
