@@ -1,12 +1,15 @@
-name: Lint, format, and build check of WASM
+name: Lint and format check of WASM
+
 on:
   push:
-    branches: [main]
+    branches: main
   pull_request:
-    branches: [main]
+    branches: main
+
 defaults:
   run:
     working-directory: wasm-src
+
 jobs:
   lint:
     name: Lint
@@ -17,6 +20,7 @@ jobs:
         with:
           components: clippy
       - run: cargo clippy -- -D warnings
+
   format-check:
     name: Format check
     runs-on: ubuntu-latest
@@ -26,10 +30,3 @@ jobs:
         with:
           components: rustfmt
       - run: cargo fmt --check
-  build-check:
-    name: Build check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dtolnay/rust-toolchain@stable
-      - run: cargo build

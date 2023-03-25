@@ -1,11 +1,14 @@
-name: Playwright Tests
+name: E2E Test
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
 env:
   E2E_PATH: tests/e2e
+
 jobs:
   test:
     timeout-minutes: 60
@@ -15,12 +18,10 @@ jobs:
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
       - uses: pnpm/action-setup@v2
-        name: Install pnpm
         with:
           version: 7
           run_install: true
-      - name: Build library
-        run: pnpm build
+      - run: pnpm build
       - name: Install E2E test dependencies
         run: pnpm install
         working-directory: ${{ env.E2E_PATH }}

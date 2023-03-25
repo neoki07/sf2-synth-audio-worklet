@@ -1,5 +1,5 @@
 {
-  "*.{js,jsx,ts,tsx}": "nr lint",
-  "*": "nr format",
-  "*.rs": ["nr lint:wasm", "nr format:wasm"]
+  "*.{js,jsx,ts,tsx}": "pnpm lint",
+  "*.{js,ts,jsx,tsx,mjs,cjs,html,css,vue,astro,yml,yaml}": "pnpm format",
+  "*.rs": ["pnpm lint:wasm", "pnpm format:wasm"]
 }
