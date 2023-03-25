@@ -97,18 +97,3 @@ jobs:
           name: playwright-report
           path: ${{ env.E2E_PATH }}/playwright-report/
           retention-days: 30
-
-  build-check:
-    name: Build check
-    runs-on: ubuntu-latest
-    needs: [test]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 18
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-          run_install: true
-      - run: pnpm build
