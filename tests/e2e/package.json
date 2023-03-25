@@ -5,17 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "nr clean && tsc && vite build",
+    "build": "pnpm clean && tsc && vite build",
     "clean": "rimraf dist",
     "preview": "vite preview",
-    "test": "na exec playwright test"
+    "test": "pnpm exec playwright test"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@antfu/ni": "^0.20.0",
     "@playwright/test": "^1.30.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
