@@ -13,7 +13,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sf2-synth-audio-worklet": "workspace:^0.0.3"
+    "sf2-synth-audio-worklet": "link:../.."
   },
   "devDependencies": {
     "@playwright/test": "^1.30.0",
