@@ -1,10 +1,5 @@
-.history
 .husky
-.vscode
-coverage
 dist
-target
 node_modules
 pnpm-lock.yaml
-
 src/generated
