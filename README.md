@@ -28,25 +28,26 @@ pnpm add sf2-synth-audio-worklet
 This code sets up a simple SoundFont2 player in React using the library.
 
 ```jsx
-import { useState } from "react";
+import { useState } from 'react'
 import {
   createSoundFont2SynthNode,
   type SoundFont2SynthNode,
-} from "sf2-synth-audio-worklet";
+} from 'sf2-synth-audio-worklet'
 
 export const App = () => {
-  const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined);
+  const [node, setNode] =
+    (useState < SoundFont2SynthNode) | (undefined > undefined)
 
   const setup = () => {
-    const audioContext = new AudioContext();
-    const url = "</path/to/soundfont2>"; // Replace with the SoundFont2 file path
+    const audioContext = new AudioContext()
+    const url = '</path/to/soundfont2>' // Replace with the SoundFont2 file path
     createSoundFont2SynthNode(audioContext, url).then((node) => {
-      node.connect(audioContext.destination);
-      setNode(node);
-    });
-  };
-  const noteOn = () => node?.noteOn(0, 60, 100, 0);
-  const noteOff = () => node?.noteOff(0, 60, 0);
+      node.connect(audioContext.destination)
+      setNode(node)
+    })
+  }
+  const noteOn = () => node?.noteOn(0, 60, 100, 0)
+  const noteOff = () => node?.noteOff(0, 60, 0)
 
   return (
     <div>
@@ -61,7 +62,7 @@ export const App = () => {
         Play
       </button>
     </div>
-  );
+  )
 }
 ```
 
