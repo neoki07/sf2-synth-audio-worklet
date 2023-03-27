@@ -5,7 +5,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/sf2-synth-audio-worklet)](https://www.npmjs.com/package/sf2-synth-audio-worklet)
 [![ci](https://github.com/resonance-box/sf2-synth-audio-worklet/actions/workflows/ci.yml/badge.svg)](https://github.com/resonance-box/sf2-synth-audio-worklet/actions/workflows/ci.yml)
 
-An Audio Worklet-based SoundFont2 player for the browser
+An Audio Worklet-based SoundFont2 synthesizer for the browser
 
 ## Installing
 
@@ -27,7 +27,7 @@ pnpm add sf2-synth-audio-worklet
 
 This code sets up a simple SoundFont2 player in React using the library.
 
-```jsx
+```tsx
 import { useState } from 'react'
 import {
   createSoundFont2SynthNode,
@@ -35,12 +35,11 @@ import {
 } from 'sf2-synth-audio-worklet'
 
 export const App = () => {
-  const [node, setNode] =
-    (useState < SoundFont2SynthNode) | (undefined > undefined)
+  const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
 
   const setup = () => {
     const audioContext = new AudioContext()
-    const url = '</path/to/soundfont2>' // Replace with the SoundFont2 file path
+    const url = 'path/to/soundfont2' // Replace with the SoundFont2 file path
     createSoundFont2SynthNode(audioContext, url).then((node) => {
       node.connect(audioContext.destination)
       setNode(node)
