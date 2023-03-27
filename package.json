@@ -1,7 +1,7 @@
 {
   "name": "sf2-synth-audio-worklet",
-  "version": "0.0.5",
-  "description": "An Audio Worklet-based SoundFont2 player for the browser",
+  "version": "0.0.6",
+  "description": "An Audio Worklet-based SoundFont2 synthesizer for the browser",
   "keywords": [
     "synthesizer",
     "sampler",
