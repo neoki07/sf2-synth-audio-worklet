@@ -70,6 +70,9 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     needs: [lint, format-check, lint-wasm, format-check-wasm]
+    defaults:
+      run:
+        working-directory: ${{ env.E2E_PATH }}
     steps:
       - uses: actions/checkout@v3
       - name: Install wasm-pack
@@ -81,16 +84,10 @@ jobs:
         with:
           version: 7
           run_install: true
-      - run: pnpm build
-      - name: Install E2E test dependencies
-        run: pnpm install
-        working-directory: ${{ env.E2E_PATH }}
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
-        working-directory: ${{ env.E2E_PATH }}
       - name: Run Playwright tests
         run: pnpm exec playwright test
-        working-directory: ${{ env.E2E_PATH }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:
