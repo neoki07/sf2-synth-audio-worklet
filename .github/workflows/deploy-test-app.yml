@@ -24,25 +24,23 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    defaults:
+      run:
+        working-directory: ${{ env.E2E_PATH }}
     steps:
       - uses: actions/checkout@v3
       - name: Install wasm-pack
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 18
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-          run_install: true
-      - name: Build library
-        run: pnpm build
-      - name: Install E2E test dependencies
-        run: pnpm install
-        working-directory: ${{ env.E2E_PATH }}
+          run_install: false
+      - run: pnpm install
       - name: Build E2e test app
         run: pnpm build
-        working-directory: ${{ env.E2E_PATH }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
