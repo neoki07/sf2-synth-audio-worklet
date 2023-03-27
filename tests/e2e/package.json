@@ -9,7 +9,7 @@
     "clean": "rimraf dist",
     "preview": "vite preview",
     "test": "pnpm exec playwright test",
-    "preinstall": "cd ../.. && pnpm build"
+    "preinstall": "cd ../.. && pnpm install && pnpm build"
   },
   "dependencies": {
     "react": "^18.2.0",
