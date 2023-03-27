@@ -53,7 +53,7 @@
     "format:check": "prettier --check .",
     "format:wasm": "cd wasm-src && cargo fmt",
     "format:check:wasm": "cd wasm-src && cargo fmt --check",
-    "prepare": "husky install && husky set .husky/pre-commit 'lint-staged' && git add .husky/pre-commit",
+    "prepare": "husky install && husky set .husky/pre-commit 'pnpm exec lint-staged' && git add .husky/pre-commit",
     "uninstall-husky": "pnpm remove husky --no-save && git config --unset core.hooksPath && pnpm exec rimraf .husky"
   },
   "devDependencies": {
