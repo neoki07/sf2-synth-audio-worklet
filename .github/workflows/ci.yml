@@ -22,7 +22,8 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-          run_install: true
+          run_install: |
+            - recursive: false
       - run: pnpm lint
 
   format-check:
@@ -36,7 +37,8 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-          run_install: true
+          run_install: |
+            - recursive: false
       - run: pnpm format:check
 
   lint-wasm:
@@ -83,7 +85,8 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-      - run: pnpm install
+          run_install: |
+            - recursive: false
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Run Playwright tests
