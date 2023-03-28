@@ -1,14 +1,14 @@
-import { PROCESSOR_NAME } from './constants.js'
 import './text-encoder-decoder.js'
 
+import { PROCESSOR_NAME } from './constants.js'
+import init, {
+  WasmSoundFontSynth,
+} from './generated/wasm/sf2_synth_audio_worklet_wasm'
 import {
   type PresetHeader,
   type SoundFont2SynthNodeMessageData,
   type SoundFont2SynthProcessorMessageData,
-} from '@/types'
-import init, {
-  WasmSoundFontSynth,
-} from './generated/wasm/sf2_synth_audio_worklet_wasm'
+} from './types'
 
 interface SoundFont2SynthProcessor extends AudioWorkletProcessor {
   noteOn: (channel: number, key: number, vel: number, delayTime: number) => void

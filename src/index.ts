@@ -1,12 +1,12 @@
 import { PROCESSOR_NAME } from './constants'
-import { SoundFont2SynthNodeImpl, type SoundFont2SynthNode } from './node'
-import { type PresetHeader } from './types'
 // eslint-disable-next-line
 // @ts-ignore
 import processorRaw from './generated/processor.js?raw'
 // eslint-disable-next-line
 // @ts-ignore
 import wasmURL from './generated/wasm/sf2_synth_audio_worklet_wasm_bg.wasm?url'
+import { SoundFont2SynthNodeImpl, type SoundFont2SynthNode } from './node'
+import { type PresetHeader } from './types'
 
 const processorBlob = new Blob([processorRaw], {
   type: 'application/javascript; charset=utf-8',

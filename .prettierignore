@@ -1,5 +1,7 @@
 .husky
 dist
+target
 node_modules
 pnpm-lock.yaml
+playwright-report
 src/generated

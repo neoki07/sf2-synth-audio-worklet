@@ -15,12 +15,7 @@
     "noImplicitReturns": true,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "useUnknownInCatchVariables": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
-      "@wasm": ["wasm/pkg"]
-    }
+    "useUnknownInCatchVariables": true
   },
   "include": ["src"],
   "exclude": ["**/*.test.ts", "node_modules", "test/**", ".history/**"]
