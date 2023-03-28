@@ -15,7 +15,7 @@
     "noImplicitReturns": true,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "useUnknownInCatchVariables": true,
+    "useUnknownInCatchVariables": true
   },
   "include": ["src"],
   "exclude": ["**/*.test.ts", "node_modules", "test/**", ".history/**"]
