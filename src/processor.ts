@@ -1,8 +1,9 @@
+import './text-encoder-decoder.js'
+
 import { PROCESSOR_NAME } from './constants.js'
 import init, {
   WasmSoundFontSynth,
 } from './generated/wasm/sf2_synth_audio_worklet_wasm'
-import './text-encoder-decoder.js'
 import {
   type PresetHeader,
   type SoundFont2SynthNodeMessageData,
