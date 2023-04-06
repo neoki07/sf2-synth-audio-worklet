@@ -54,7 +54,7 @@ class SoundFont2SynthProcessorImpl
           })
         this.sf2Bytes = data.sf2Bytes
         break
-      case 'init-synth':
+      case 'init-synth': {
         if (this.sf2Bytes == null) {
           throw new Error('sf2Bytes is undefined')
         }
@@ -63,7 +63,13 @@ class SoundFont2SynthProcessorImpl
           new Uint8Array(this.sf2Bytes),
           data.sampleRate
         )
+
+        const postData: SoundFont2SynthNodeMessageData = {
+          type: 'init-completed-synth',
+        }
+        this.port.postMessage(postData)
         break
+      }
       case 'note-on':
         this.noteOn(data.channel, data.key, data.vel, data.delayTime)
         break

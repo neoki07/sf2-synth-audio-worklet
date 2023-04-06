@@ -19,6 +19,7 @@ export class SoundFont2SynthNodeImpl
   extends AudioWorkletNode
   implements SoundFont2SynthNode
 {
+  private initCompletedSynthCallback?: () => void
   sampleRate: number
 
   constructor(
@@ -34,7 +35,7 @@ export class SoundFont2SynthNodeImpl
    * @param {ArrayBuffer} wasmBytes
    * @param {ArrayBuffer} sf2Bytes
    */
-  init(wasmBytes: ArrayBuffer, sf2Bytes: ArrayBuffer): void {
+  async init(wasmBytes: ArrayBuffer, sf2Bytes: ArrayBuffer): Promise<void> {
     this.port.onmessage = (event) => {
       this.onmessage(event)
     }
@@ -44,7 +45,11 @@ export class SoundFont2SynthNodeImpl
       wasmBytes,
       sf2Bytes,
     }
-    this.port.postMessage(data)
+
+    await new Promise<void>((resolve) => {
+      this.initCompletedSynthCallback = resolve
+      this.port.postMessage(data)
+    })
   }
 
   onprocessorerror = (): void => {
@@ -61,6 +66,10 @@ export class SoundFont2SynthNodeImpl
           sampleRate: this.context.sampleRate,
         }
         this.port.postMessage(data)
+        break
+      }
+      case 'init-completed-synth': {
+        this.initCompletedSynthCallback?.()
         break
       }
       case 'got-preset-headers':
