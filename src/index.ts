@@ -49,7 +49,7 @@ async function createSoundFont2SynthNode(
     // Send the Wasm module to the audio node which in turn passes it to the
     // processor running in the Worklet thread. Also, pass any configuration
     // parameters for the Wasm detection algorithm.
-    node.init(wasmBytes, sf2Bytes)
+    await node.init(wasmBytes, sf2Bytes)
   } catch (err) {
     let errorMessage = 'Failed to load audio analyzer WASM module. '
 

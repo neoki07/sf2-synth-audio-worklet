@@ -13,6 +13,9 @@ export type SoundFont2SynthNodeMessageData =
       type: 'wasm-module-loaded'
     }
   | {
+      type: 'init-completed-synth'
+    }
+  | {
       type: 'got-preset-headers'
       presetHeaders: PresetHeader[]
     }
