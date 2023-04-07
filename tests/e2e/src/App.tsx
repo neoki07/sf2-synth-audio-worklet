@@ -25,13 +25,16 @@ const keys: Array<{ color: 'black' | 'white'; label: string; key: number }> = [
 
 export const App: FC = () => {
   const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
+  const [loading, setLoading] = useState(false)
 
   const start = useCallback(() => {
+    setLoading(true)
     const audioContext = new AudioContext()
     createSoundFont2SynthNode(audioContext, sf2URL)
       .then((node) => {
         node.connect(audioContext.destination)
         setNode(node)
+        setLoading(false)
       })
       .catch((err) => {
         throw new Error(
@@ -60,7 +63,7 @@ export const App: FC = () => {
       <Button
         data-testid="start-button"
         width={816}
-        disabled={!(node == null)}
+        disabled={node !== undefined || loading}
         onClick={start}
       >
         Start
@@ -72,7 +75,7 @@ export const App: FC = () => {
             data-testid={`key-${key}-button`}
             width={48}
             color={color}
-            disabled={node == null}
+            disabled={node === undefined}
             onMouseDown={() => {
               playNote(key)
             }}
