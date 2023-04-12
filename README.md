@@ -28,7 +28,7 @@ pnpm add sf2-synth-audio-worklet
 This code sets up a simple SoundFont2 player in React using the library.
 
 ```tsx
-import { useState } from 'react';
+import { useState } from 'react'
 import {
   createSoundFont2SynthNode,
   type SoundFont2SynthNode,
@@ -51,7 +51,7 @@ export default function App() {
   function noteOn() {
     node?.noteOn(0, 60, 100, 0)
   }
-  
+
   function noteOff() {
     node?.noteOff(0, 60, 0)
   }
@@ -69,7 +69,7 @@ export default function App() {
         Play
       </button>
     </div>
-  );
+  )
 }
 ```
 
