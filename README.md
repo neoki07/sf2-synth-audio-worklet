@@ -9,7 +9,7 @@ An Audio Worklet-based SoundFont2 synthesizer for the browser
 
 ## Installing
 
-install the library with npm or yarn or pnpm.
+Install the library with npm or yarn or pnpm.
 
 ```bash
 npm install sf2-synth-audio-worklet
@@ -28,16 +28,18 @@ pnpm add sf2-synth-audio-worklet
 This code sets up a simple SoundFont2 player in React using the library.
 
 ```tsx
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   createSoundFont2SynthNode,
   type SoundFont2SynthNode,
 } from 'sf2-synth-audio-worklet'
 
-export const App = () => {
+export default function App() {
+  const [started, setStarted] = useState(false)
   const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
 
-  const setup = () => {
+  function setup() {
+    setStarted(true)
     const audioContext = new AudioContext()
     const url = 'path/to/soundfont2' // Replace with the SoundFont2 file path
     createSoundFont2SynthNode(audioContext, url).then((node) => {
@@ -45,12 +47,18 @@ export const App = () => {
       setNode(node)
     })
   }
-  const noteOn = () => node?.noteOn(0, 60, 100, 0)
-  const noteOff = () => node?.noteOff(0, 60, 0)
+
+  function noteOn() {
+    node?.noteOn(0, 60, 100, 0)
+  }
+  
+  function noteOff() {
+    node?.noteOff(0, 60, 0)
+  }
 
   return (
     <div>
-      <button disabled={node !== undefined} onClick={setup}>
+      <button disabled={started} onClick={setup}>
         Start
       </button>
       <button
@@ -61,7 +69,7 @@ export const App = () => {
         Play
       </button>
     </div>
-  )
+  );
 }
 ```
 
