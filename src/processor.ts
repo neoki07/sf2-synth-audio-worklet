@@ -61,7 +61,7 @@ class SoundFont2SynthProcessorImpl
 
         this.synth = WasmSoundFontSynth.new(
           new Uint8Array(this.sf2Bytes),
-          data.sampleRate
+          data.sampleRate,
         )
 
         const postData: SoundFont2SynthNodeMessageData = {

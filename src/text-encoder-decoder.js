@@ -95,5 +95,5 @@
         ? undefined
         : self
       : global
-    : globalThis
+    : globalThis,
 )

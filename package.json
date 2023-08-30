@@ -19,15 +19,16 @@
   "license": "MIT",
   "author": "ot07",
   "engines": {
-    "node": "18.x",
-    "pnpm": ">=7.26.0"
+    "node": ">=18.x",
+    "pnpm": ">=7.x"
   },
-  "packageManager": "pnpm@7.26.0",
+  "packageManager": "pnpm@8.7.0",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     }
   },
   "files": [
@@ -44,7 +45,8 @@
     "build:processor": "pnpm clean:processor && rollup -c rollup-processor.config.mjs",
     "watch:processor": "pnpm clean:processor && rollup -c rollup-processor.config.mjs -w",
     "clean:processor": "rimraf src/generated/processor.js src/generated/processor.js.map",
-    "test": "pnpm test:e2e",
+    "test": "pnpm test:e2e:prepare && pnpm test:e2e",
+    "test:e2e:prepare": "cd tests/e2e && [ ! -d 'node_modules' ] && pnpm install || true",
     "test:e2e": "cd tests/e2e && pnpm test",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -57,26 +59,27 @@
     "uninstall-husky": "pnpm remove husky --no-save && git config --unset core.hooksPath && pnpm exec rimraf .husky"
   },
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.0",
-    "@rollup/plugin-typescript": "^11.0.0",
-    "@types/node": "^18.15.3",
-    "@typescript-eslint/eslint-plugin": "^5.55.0",
-    "eslint": "^8.36.0",
-    "eslint-config-prettier": "^8.7.0",
-    "eslint-config-standard-with-typescript": "^34.0.1",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.6.1",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@rollup/plugin-typescript": "^11.1.3",
+    "@types/node": "^20.5.7",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-standard-with-typescript": "^39.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-n": "^16.0.2",
     "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react": "^7.33.2",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.0",
-    "prettier": "^2.8.4",
-    "prettier-plugin-organize-imports": "^3.2.2",
-    "rimraf": "^4.4.0",
-    "rollup": "^3.19.1",
-    "typescript": "^4.9.5",
-    "vite": "^4.1.4",
-    "vite-plugin-dts": "^2.1.0"
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.3",
+    "prettier-plugin-organize-imports": "^3.2.3",
+    "rimraf": "^5.0.1",
+    "rollup": "^3.28.1",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "vite-plugin-dts": "^3.5.3"
   },
   "publishConfig": {
     "access": "public"

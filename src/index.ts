@@ -14,7 +14,7 @@ const processorBlob = new Blob([processorRaw], {
 
 async function createSoundFont2SynthNode(
   context: AudioContext,
-  sf2URL: string | URL
+  sf2URL: string | URL,
 ): Promise<SoundFont2SynthNode> {
   let node
 
@@ -65,5 +65,5 @@ async function createSoundFont2SynthNode(
   return node
 }
 
-export { type SoundFont2SynthNode, createSoundFont2SynthNode }
+export { createSoundFont2SynthNode, type SoundFont2SynthNode }
 export type { PresetHeader }

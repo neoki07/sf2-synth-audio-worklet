@@ -1,10 +1,9 @@
 import { type ComponentPropsWithoutRef, type FC } from 'react'
 
-type Props =
-  | ComponentPropsWithoutRef<'button'> & {
-      width: number
-      color?: 'black' | 'white'
-    }
+type Props = ComponentPropsWithoutRef<'button'> & {
+  width: number
+  color?: 'black' | 'white'
+}
 
 export const Button: FC<Props> = ({
   width = 48,

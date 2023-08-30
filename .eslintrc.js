@@ -9,7 +9,15 @@ module.exports = {
     'standard-with-typescript',
     'prettier',
   ],
-  overrides: [],
+  overrides: [
+    {
+      files: ['src/text-encoder-decoder.js'],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/strict-boolean-expressions': 'off',
+      },
+    },
+  ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
