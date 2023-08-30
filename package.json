@@ -20,7 +20,7 @@
   "author": "ot07",
   "engines": {
     "node": ">=18.x",
-    "pnpm": ">=8.x"
+    "pnpm": ">=7.x"
   },
   "packageManager": "pnpm@8.7.0",
   "module": "./dist/index.mjs",
