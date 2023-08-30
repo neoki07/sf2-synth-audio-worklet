@@ -6,3 +6,4 @@ playwright.config.ts
 pnpm-lock.yaml
 *.spec.ts
 src/generated
+.eslintrc.js
