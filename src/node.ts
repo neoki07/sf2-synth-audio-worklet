@@ -25,7 +25,7 @@ export class SoundFont2SynthNodeImpl
   constructor(
     context: BaseAudioContext,
     name: string,
-    options?: AudioWorkletNodeOptions
+    options?: AudioWorkletNodeOptions,
   ) {
     super(context, name, options)
     this.sampleRate = 44100
@@ -123,7 +123,7 @@ export class SoundFont2SynthNodeImpl
 }
 
 const waitToGetPresetHeaders = (
-  resolve: (value: PromiseLike<PresetHeader[]> | PresetHeader[]) => void
+  resolve: (value: PromiseLike<PresetHeader[]> | PresetHeader[]) => void,
 ): void => {
   if (_presetHeaders !== undefined) {
     const presetHeaders = _presetHeaders

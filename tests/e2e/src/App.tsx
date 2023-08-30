@@ -39,7 +39,7 @@ export const App: FC = () => {
       .catch((err) => {
         throw new Error(
           'An error occurred while creating `SoundFont2SynthNode`:',
-          err
+          err,
         )
       })
   }, [])
@@ -48,14 +48,14 @@ export const App: FC = () => {
     (key: number) => {
       node?.noteOn(0, key, 100, 0)
     },
-    [node]
+    [node],
   )
 
   const stopNote = useCallback(
     (key: number) => {
       node?.noteOff(0, key, 0)
     },
-    [node]
+    [node],
   )
 
   return (

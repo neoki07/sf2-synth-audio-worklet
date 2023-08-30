@@ -12,15 +12,15 @@ interface AudioWorkletProcessorImpl extends AudioWorkletProcessor {
   process: (
     inputs: Float32Array[][],
     outputs: Float32Array[][],
-    parameters: Record<string, Float32Array>
+    parameters: Record<string, Float32Array>,
   ) => boolean
 }
 
 type AudioWorkletProcessorConstructor = new (
-  options: any
+  options: any,
 ) => AudioWorkletProcessorImpl
 
 declare function registerProcessor(
   name: string,
-  processorCtor: AudioWorkletProcessorConstructor
+  processorCtor: AudioWorkletProcessorConstructor,
 ): void
