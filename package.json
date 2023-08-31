@@ -1,6 +1,6 @@
 {
   "name": "sf2-synth-audio-worklet",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "An Audio Worklet-based SoundFont2 synthesizer for the browser",
   "keywords": [
     "synthesizer",
