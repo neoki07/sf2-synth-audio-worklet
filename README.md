@@ -31,12 +31,12 @@ This code sets up a simple SoundFont2 player in React using the library.
 import { useState } from 'react'
 import {
   createSoundFont2SynthNode,
-  type SoundFont2SynthNode,
+  SoundFont2SynthNode,
 } from 'sf2-synth-audio-worklet'
 
 export default function App() {
   const [started, setStarted] = useState(false)
-  const [node, setNode] = useState<SoundFont2SynthNode | undefined>(undefined)
+  const [node, setNode] = useState<SoundFont2SynthNode>()
 
   function setup() {
     setStarted(true)
