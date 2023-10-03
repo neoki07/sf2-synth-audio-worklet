@@ -5,7 +5,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/sf2-synth-audio-worklet)](https://www.npmjs.com/package/sf2-synth-audio-worklet)
 [![ci](https://github.com/resonance-box/sf2-synth-audio-worklet/actions/workflows/ci.yml/badge.svg)](https://github.com/resonance-box/sf2-synth-audio-worklet/actions/workflows/ci.yml)
 
-An Audio Worklet-based SoundFont2 synthesizer for the browser
+An Audio Worklet-based SoundFont2 synthesizer for the browser.
 
 ## Installing
 
