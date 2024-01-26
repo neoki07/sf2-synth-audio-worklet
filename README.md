@@ -34,39 +34,37 @@ import {
   SoundFont2SynthNode,
 } from 'sf2-synth-audio-worklet'
 
-export default function App() {
+function App() {
   const [started, setStarted] = useState(false)
   const [node, setNode] = useState<SoundFont2SynthNode>()
 
-  function setup() {
+  const setup = () => {
     setStarted(true)
+
     const audioContext = new AudioContext()
     const url = 'path/to/soundfont2' // Replace with the SoundFont2 file path
+
     createSoundFont2SynthNode(audioContext, url).then((node) => {
       node.connect(audioContext.destination)
       setNode(node)
     })
   }
 
-  function noteOn() {
+  const noteOn = () => {
     node?.noteOn(0, 60, 100, 0)
   }
 
-  function noteOff() {
+  const noteOff = () => {
     node?.noteOff(0, 60, 0)
   }
 
   return (
     <div>
       <button disabled={started} onClick={setup}>
-        Start
+        Setup
       </button>
-      <button
-        disabled={node === undefined}
-        onMouseDown={noteOn}
-        onMouseUp={noteOff}
-      >
-        Play
+      <button disabled={!node} onMouseDown={noteOn} onMouseUp={noteOff}>
+        Sound
       </button>
     </div>
   )
