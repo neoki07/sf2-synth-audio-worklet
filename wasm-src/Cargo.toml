@@ -1,7 +1,7 @@
 [package]
 name = "sf2-synth-audio-worklet-wasm"
 version = "0.1.0"
-authors = ["ot07 <ot07neoki@gmail.com>"]
+authors = ["neoki <ot07neoki@gmail.com>"]
 edition = "2018"
 
 [lib]
