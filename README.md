@@ -18,22 +18,25 @@ npm install sf2-synth-audio-worklet
 This code sets up a simple SoundFont2 player in React using the library.
 
 ```tsx
-import { useState } from 'react';
-import { createSoundFont2SynthNode, type SoundFont2SynthNode } from 'sf2-synth-audio-worklet';
+import { useState } from 'react'
+import {
+  createSoundFont2SynthNode,
+  type SoundFont2SynthNode,
+} from 'sf2-synth-audio-worklet'
 
 function App() {
-  const [node, setNode] = useState<SoundFont2SynthNode>();
+  const [node, setNode] = useState<SoundFont2SynthNode>()
 
   const setup = async () => {
-    const audioContext = new AudioContext();
-    const sf2Url = 'path/to/soundfont2'; // Replace with the SoundFont2 file path
-    const node = await createSoundFont2SynthNode(audioContext, sf2Url);
-    node.connect(audioContext.destination);
-    setNode(node);
-  };
+    const audioContext = new AudioContext()
+    const sf2Url = 'path/to/soundfont2' // Replace with the SoundFont2 file path
+    const node = await createSoundFont2SynthNode(audioContext, sf2Url)
+    node.connect(audioContext.destination)
+    setNode(node)
+  }
 
-  const noteOn = () => node?.noteOn(0, 60, 100, 0);
-  const noteOff = () => node?.noteOff(0, 60, 0);
+  const noteOn = () => node?.noteOn(0, 60, 100, 0)
+  const noteOff = () => node?.noteOff(0, 60, 0)
 
   return (
     <div>
@@ -44,7 +47,7 @@ function App() {
         Sound
       </button>
     </div>
-  );
+  )
 }
 ```
 
