@@ -7,20 +7,10 @@
 
 An Audio Worklet-based SoundFont2 synthesizer for the browser.
 
-## Installing
-
-Install the library with npm or yarn or pnpm.
+## Installation
 
 ```bash
 npm install sf2-synth-audio-worklet
-```
-
-```bash
-yarn add sf2-synth-audio-worklet
-```
-
-```bash
-pnpm add sf2-synth-audio-worklet
 ```
 
 ## Getting Started
@@ -28,46 +18,33 @@ pnpm add sf2-synth-audio-worklet
 This code sets up a simple SoundFont2 player in React using the library.
 
 ```tsx
-import { useState } from 'react'
-import {
-  createSoundFont2SynthNode,
-  SoundFont2SynthNode,
-} from 'sf2-synth-audio-worklet'
+import { useState } from 'react';
+import { createSoundFont2SynthNode, type SoundFont2SynthNode } from 'sf2-synth-audio-worklet';
 
 function App() {
-  const [started, setStarted] = useState(false)
-  const [node, setNode] = useState<SoundFont2SynthNode>()
+  const [node, setNode] = useState<SoundFont2SynthNode>();
 
-  const setup = () => {
-    setStarted(true)
+  const setup = async () => {
+    const audioContext = new AudioContext();
+    const sf2Url = 'path/to/soundfont2'; // Replace with the SoundFont2 file path
+    const node = await createSoundFont2SynthNode(audioContext, sf2Url);
+    node.connect(audioContext.destination);
+    setNode(node);
+  };
 
-    const audioContext = new AudioContext()
-    const url = 'path/to/soundfont2' // Replace with the SoundFont2 file path
-
-    createSoundFont2SynthNode(audioContext, url).then((node) => {
-      node.connect(audioContext.destination)
-      setNode(node)
-    })
-  }
-
-  const noteOn = () => {
-    node?.noteOn(0, 60, 100, 0)
-  }
-
-  const noteOff = () => {
-    node?.noteOff(0, 60, 0)
-  }
+  const noteOn = () => node?.noteOn(0, 60, 100, 0);
+  const noteOff = () => node?.noteOff(0, 60, 0);
 
   return (
     <div>
-      <button disabled={started} onClick={setup}>
+      <button onClick={setup} disabled={!!node}>
         Setup
       </button>
-      <button disabled={!node} onMouseDown={noteOn} onMouseUp={noteOff}>
+      <button onMouseDown={noteOn} onMouseUp={noteOff} disabled={!node}>
         Sound
       </button>
     </div>
-  )
+  );
 }
 ```
 
