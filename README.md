@@ -1,9 +1,9 @@
 # sf2-synth-audio-worklet
 
-[![license](https://img.shields.io/npm/l/sf2-synth-audio-worklet.svg)](https://github.com/neokidev/sf2-synth-audio-worklet/blob/main/LICENSE.md)
+[![license](https://img.shields.io/npm/l/sf2-synth-audio-worklet.svg)](https://github.com/neoki07/sf2-synth-audio-worklet/blob/main/LICENSE.md)
 [![npm](https://img.shields.io/npm/v/sf2-synth-audio-worklet.svg)](https://www.npmjs.com/package/sf2-synth-audio-worklet)
 [![npm downloads](https://img.shields.io/npm/dm/sf2-synth-audio-worklet)](https://www.npmjs.com/package/sf2-synth-audio-worklet)
-[![ci](https://github.com/neokidev/sf2-synth-audio-worklet/actions/workflows/ci.yml/badge.svg)](https://github.com/neokidev/sf2-synth-audio-worklet/actions/workflows/ci.yml)
+[![ci](https://github.com/neoki07/sf2-synth-audio-worklet/actions/workflows/ci.yml/badge.svg)](https://github.com/neoki07/sf2-synth-audio-worklet/actions/workflows/ci.yml)
 
 An Audio Worklet-based SoundFont2 synthesizer for the browser.
 

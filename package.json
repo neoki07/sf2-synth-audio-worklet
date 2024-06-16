@@ -10,11 +10,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neokidev/sf2-synth-audio-worklet.git"
+    "url": "git+https://github.com/neoki07/sf2-synth-audio-worklet.git"
   },
-  "homepage": "https://github.com/neokidev/sf2-synth-audio-worklet#readme",
+  "homepage": "https://github.com/neoki07/sf2-synth-audio-worklet#readme",
   "bugs": {
-    "url": "https://github.com/neokidev/sf2-synth-audio-worklet/issues"
+    "url": "https://github.com/neoki07/sf2-synth-audio-worklet/issues"
   },
   "license": "MIT",
   "author": "neoki",
